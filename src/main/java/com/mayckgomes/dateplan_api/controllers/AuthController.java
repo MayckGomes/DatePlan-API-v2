@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokensResponse> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<TokensResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authServices.login(loginRequest));
 
     }
@@ -34,12 +34,12 @@ public class AuthController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<TokensResponse> refreshToken(@RequestHeader("Authorization") String token ){
+    public ResponseEntity<TokensResponse> refreshToken(@Valid @RequestHeader("Authorization") String token ){
         return ResponseEntity.ok(authServices.refreshToken(token));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest){
+    public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest logoutRequest){
         authServices.logout(logoutRequest);
 
         return ResponseEntity.ok().build();
