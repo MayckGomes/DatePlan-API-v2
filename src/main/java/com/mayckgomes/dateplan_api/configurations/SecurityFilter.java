@@ -39,7 +39,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 token = token.replace("Bearer ", "");
 
-                redisBlackListService.verifyIfBlacklisted(token);
+                redisBlackListService.verifyIfBlacklisted(jwtService.getTokenId(token));
 
                 UserDomain user = jwtService.decodeAccessToken(token);
 
