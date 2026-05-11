@@ -32,7 +32,7 @@ public class JwtService {
         int tenSeconds = 10;
         int oneWeekInSeconds = 604800;
 
-        Instant expireTimeAccess = Instant.now().plusSeconds(tenSeconds);
+        Instant expireTimeAccess = Instant.now().plusSeconds(fifteenMinutesInSeconds);
         Instant expireTimeRefresh = Instant.now().plusSeconds(oneWeekInSeconds);
 
         String accessTokenId = UUID.randomUUID().toString();
@@ -76,7 +76,7 @@ public class JwtService {
                     verifier.getClaim("publicId").asString(),
                     verifier.getClaim("name").asString(),
                     verifier.getClaim("email").asString(),
-                    verifier.getClaim("relationshipId").asString(),
+                    verifier.getClaim("relationshipId").asLong(),
                     verifier.getClaim("plan").asString(),
                     verifier.getClaim("notificationToken").asString()
             );

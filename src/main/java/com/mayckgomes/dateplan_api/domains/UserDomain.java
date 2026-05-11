@@ -19,11 +19,11 @@ public class UserDomain implements UserDetails {
     private String name;
     private String email;
     private String password;
-    private String relationshipId;
+    private Long relationshipId;
     private String plan;
     private String notificationToken;
 
-    public UserDomain(Long id, String publicId, String name, String email, String relationshipId, String plan, String notificationToken) {
+    public UserDomain(Long id, String publicId, String name, String email, Long relationshipId, String plan, String notificationToken) {
         this.id = id;
         this.publicId = publicId;
         this.name = name;

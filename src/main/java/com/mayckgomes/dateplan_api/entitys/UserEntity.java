@@ -20,7 +20,7 @@ public class UserEntity {
     private String name;
     private String email;
     private String password;
-    private String relationshipId;
+    private Long relationshipId;
     private String plan;
     private String notificationToken;
 
