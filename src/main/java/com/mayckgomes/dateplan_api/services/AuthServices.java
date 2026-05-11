@@ -3,6 +3,7 @@ package com.mayckgomes.dateplan_api.services;
 import com.mayckgomes.dateplan_api.auth.JwtService;
 import com.mayckgomes.dateplan_api.dto.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
+import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
 import com.mayckgomes.dateplan_api.entitys.UserEntity;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
@@ -99,6 +100,13 @@ public class AuthServices {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return jwtService.createTokens(user.toUserDomain());
+
+    }
+
+    public void logout(LogoutRequest logoutRequest){
+
+        redisBlackListService.addAccessToken(jwtService.getTokenId(logoutRequest.getAccessToken()),logoutRequest.getAccessToken());
+        redisBlackListService.addRefreshToken(jwtService.getTokenId(logoutRequest.getRefreshToken()),logoutRequest.getAccessToken());
 
     }
 

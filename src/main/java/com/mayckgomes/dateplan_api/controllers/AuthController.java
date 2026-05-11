@@ -3,6 +3,7 @@ package com.mayckgomes.dateplan_api.controllers;
 
 import com.mayckgomes.dateplan_api.dto.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
+import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
 import com.mayckgomes.dateplan_api.services.AuthServices;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,13 @@ public class AuthController {
     @PostMapping("/refreshToken")
     public ResponseEntity<TokensResponse> refreshToken(@RequestHeader("Authorization") String token ){
         return ResponseEntity.ok(authServices.refreshToken(token));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest){
+        authServices.logout(logoutRequest);
+
+        return ResponseEntity.ok().build();
     }
 
 }

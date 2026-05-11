@@ -89,8 +89,6 @@ public class JwtService {
 
     public RefreshTokenDecoded decodeRefreshToken(String token){
 
-        System.out.println("secret: "+secret);
-
         try{
 
             DecodedJWT verifier = JWT.require(algorithm)
@@ -102,6 +100,16 @@ public class JwtService {
         } catch (JWTVerificationException exception){
             throw new TokenExpiredException(exception.getMessage());
         }
+
+    }
+
+    public String getTokenId(String token){
+
+        DecodedJWT verifier = JWT.require(algorithm)
+                .build()
+                .verify(token);
+
+        return verifier.getId();
 
     }
 
