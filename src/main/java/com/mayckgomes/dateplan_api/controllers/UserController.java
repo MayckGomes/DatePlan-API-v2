@@ -3,7 +3,6 @@ package com.mayckgomes.dateplan_api.controllers;
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.user.ChangeNameRequest;
 import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
-import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
