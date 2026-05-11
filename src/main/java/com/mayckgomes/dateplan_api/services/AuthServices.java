@@ -6,6 +6,7 @@ import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
 import com.mayckgomes.dateplan_api.entitys.UserEntity;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
@@ -89,7 +90,9 @@ public class AuthServices {
 
     public TokensResponse refreshToken(String token){
 
-        token = token.replace("Bearer ", "");
+        if (!token.startsWith("Bearer ") || token.isEmpty() || token == null){
+            throw new TokenInvalidException();
+        }
 
         var tokenDecoded = jwtService.decodeRefreshToken(token);
 
