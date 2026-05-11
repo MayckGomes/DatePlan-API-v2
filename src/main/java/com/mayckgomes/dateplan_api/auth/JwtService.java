@@ -2,13 +2,13 @@ package com.mayckgomes.dateplan_api.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mayckgomes.dateplan_api.domains.RefreshTokenDecoded;
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.TokensResponse;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 
@@ -40,33 +40,27 @@ public class JwtService {
         String accessTokenId = UUID.randomUUID().toString();
         String refreshTokenId = UUID.randomUUID().toString();
 
-        try {
-
-            return new TokensResponse(
-                    JWT.create()
-                            .withJWTId(accessTokenId)
-                            .withClaim("id", user.getId())
-                            .withClaim("name", user.getName())
-                            .withClaim("email", user.getEmail())
-                            .withClaim("relationshipId", user.getRelationshipId())
-                            .withClaim("publicId", user.getPublicId())
-                            .withClaim("plan", user.getPlan())
-                            .withExpiresAt(expireTimeAccess)
-                            .withAudience(audience)
-                            .withIssuer(issuer)
-                            .sign(algorithm),
-                    JWT.create()
-                            .withJWTId(refreshTokenId)
-                            .withClaim("id", user.getId())
-                            .withExpiresAt(expireTimeRefresh)
-                            .withAudience(audience)
-                            .withIssuer(issuer)
-                            .sign(algorithm)
-            );
-
-        } catch (JWTCreationException exception) {
-            return null;
-        }
+        return new TokensResponse(
+                JWT.create()
+                        .withJWTId(accessTokenId)
+                        .withClaim("id", user.getId())
+                        .withClaim("name", user.getName())
+                        .withClaim("email", user.getEmail())
+                        .withClaim("relationshipId", user.getRelationshipId())
+                        .withClaim("publicId", user.getPublicId())
+                        .withClaim("plan", user.getPlan())
+                        .withExpiresAt(expireTimeAccess)
+                        .withAudience(audience)
+                        .withIssuer(issuer)
+                        .sign(algorithm),
+                JWT.create()
+                        .withJWTId(refreshTokenId)
+                        .withClaim("id", user.getId())
+                        .withExpiresAt(expireTimeRefresh)
+                        .withAudience(audience)
+                        .withIssuer(issuer)
+                        .sign(algorithm)
+        );
     }
 
     public UserDomain decodeAccessToken(String token){
@@ -87,8 +81,10 @@ public class JwtService {
                     verifier.getClaim("notificationToken").asString()
             );
 
-        } catch (JWTVerificationException exception){
+        } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
             throw new TokenExpiredException();
+        } catch (JWTVerificationException exception){
+            throw new TokenInvalidException();
         }
 
     }
@@ -103,8 +99,10 @@ public class JwtService {
 
             return new RefreshTokenDecoded(verifier.getId(),verifier.getClaim("id").asLong());
 
+        } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
+            throw new TokenExpiredException();
         } catch (JWTVerificationException exception){
-            throw new TokenExpiredException(exception.getMessage());
+            throw new TokenInvalidException();
         }
 
     }
