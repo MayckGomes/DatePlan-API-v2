@@ -22,7 +22,9 @@ public class JwtService {
 
     final private String secret = dotenv.get("SECRET");
 
+    final private String issuer = dotenv.get("ISSUER");
 
+    final private String audience = dotenv.get("AUDIENCE");
 
     final private Algorithm algorithm = Algorithm.HMAC256(secret);
 
@@ -50,11 +52,15 @@ public class JwtService {
                             .withClaim("publicId", user.getPublicId())
                             .withClaim("plan", user.getPlan())
                             .withExpiresAt(expireTimeAccess)
+                            .withAudience(audience)
+                            .withIssuer(issuer)
                             .sign(algorithm),
                     JWT.create()
                             .withJWTId(refreshTokenId)
                             .withClaim("id", user.getId())
                             .withExpiresAt(expireTimeRefresh)
+                            .withAudience(audience)
+                            .withIssuer(issuer)
                             .sign(algorithm)
             );
 
