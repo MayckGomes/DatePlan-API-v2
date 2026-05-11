@@ -1,19 +1,30 @@
 package com.mayckgomes.dateplan_api.services;
 
-import com.mayckgomes.dateplan_api.dto.user.UserResponse;
+import com.mayckgomes.dateplan_api.auth.JwtService;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServices implements UserDetailsService {
 
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
+    RedisBlackListService redisBlackListService;
+    JwtService jwtService;
 
-    public UserServices(UserRepository userRepository) {
+    public UserServices(UserRepository userRepository,
+                        PasswordEncoder passwordEncoder,
+                        RedisBlackListService redisBlackListService,
+                        JwtService jwtService) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.redisBlackListService = redisBlackListService;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -37,6 +48,29 @@ public class UserServices implements UserDetailsService {
         targetUser.setName(newName);
 
         userRepository.save(targetUser);
+
+    }
+
+    public void changeUserPassword(Long userId,String newPassword, String accessToken, String refreshToken){
+
+        if (accessToken.isEmpty() || accessToken == null || !accessToken.startsWith("Bearer ")) {
+
+            throw new TokenInvalidException();
+
+        }
+
+        accessToken = accessToken.replace("Bearer ", "");
+
+        var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        var encryptedPassword = (passwordEncoder.encode(newPassword));
+
+        targetUser.setPassword(encryptedPassword);
+
+        userRepository.save(targetUser);
+
+        redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
+        redisBlackListService.addRefreshToken(jwtService.getTokenId(refreshToken),refreshToken);
 
     }
 

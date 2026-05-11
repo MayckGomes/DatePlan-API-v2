@@ -2,6 +2,8 @@ package com.mayckgomes.dateplan_api.controllers;
 
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.user.ChangeNameRequest;
+import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,20 @@ public class UserController {
         userServices.changeUserName(user.getId(),changeNameRequest.getNewName());
 
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity<Void> changePassword(
+            Authentication authentication,
+            @RequestHeader("Authentication") String accessToken,
+            @RequestBody ChangePasswordRequest changePasswordRequest) {
+
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        userServices.changeUserPassword(user.getId(),changePasswordRequest.getNewPassword(),accessToken,changePasswordRequest.getRefreshToken());
+
+        return ResponseEntity.ok().build();
+
     }
 
 }
