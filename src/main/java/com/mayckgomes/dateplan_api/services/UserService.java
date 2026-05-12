@@ -3,7 +3,6 @@ package com.mayckgomes.dateplan_api.services;
 import com.mayckgomes.dateplan_api.auth.JwtService;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
-import com.mayckgomes.dateplan_api.exception.custom.relationship.UserRelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
@@ -94,7 +93,7 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public UserRelationshipIdResponse getUserRelationshipId(Long userId){
+    public UserRelationshipIdResponse getRelationshipId(Long userId){
         var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return new UserRelationshipIdResponse(targetUser.getRelationshipId());
