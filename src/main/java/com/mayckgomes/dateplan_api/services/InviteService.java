@@ -4,7 +4,7 @@ import com.mayckgomes.dateplan_api.dto.invite.*;
 import com.mayckgomes.dateplan_api.entitys.InviteEntity;
 import com.mayckgomes.dateplan_api.entitys.RelationshipEntity;
 import com.mayckgomes.dateplan_api.exception.custom.invite.InviteNotExistsException;
-import com.mayckgomes.dateplan_api.exception.custom.invite.ToUserAlreadyInRelationshipException;
+import com.mayckgomes.dateplan_api.exception.custom.invite.UserAlreadyInRelationshipException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.InviteRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipRepository;
@@ -33,27 +33,27 @@ public class InviteService {
     @Transactional
     public CreateInviteResponse createInvite(CreateInviteRequest createInviteRequest) {
 
-        var toUser = userRepository.findByPublicId(createInviteRequest.getPublicIdTo())
-                .orElseThrow(() -> new UserNotFoundException("To"));
+        var reciverUser = userRepository.findByPublicId(createInviteRequest.getPublicIdTo())
+                .orElseThrow(() -> new UserNotFoundException("Reciver"));
 
-        if (toUser.getRelationshipId() != null){
-            throw new ToUserAlreadyInRelationshipException("To");
+        if (reciverUser.getRelationshipId() != null){
+            throw new UserAlreadyInRelationshipException("Reciver");
         }
 
-        var fromUser = userRepository.findByPublicId(createInviteRequest.getPublicIdFrom())
-                .orElseThrow(() -> new UserNotFoundException("From"));
+        var senderUser = userRepository.findByPublicId(createInviteRequest.getPublicIdFrom())
+                .orElseThrow(() -> new UserNotFoundException("Sender"));
 
-        if (fromUser.getRelationshipId() != null){
-            throw new ToUserAlreadyInRelationshipException("From");
+        if (senderUser.getRelationshipId() != null){
+            throw new UserAlreadyInRelationshipException("Sender");
         }
 
         var inviteEntity = new InviteEntity();
 
-        inviteEntity.setFromId(fromUser.getId());
-        inviteEntity.setFromName(fromUser.getName());
+        inviteEntity.setSender_id(senderUser.getId());
+        inviteEntity.setSender_name(senderUser.getName());
 
-        inviteEntity.setToId(toUser.getId());
-        inviteEntity.setToName(toUser.getName());
+        inviteEntity.setReciver_id(reciverUser.getId());
+        inviteEntity.setReciver_name(reciverUser.getName());
 
         var inviteId = inviteRepository.save(inviteEntity).getId();
 
@@ -74,39 +74,39 @@ public class InviteService {
 
         var targetInvite = inviteRepository.findById(invite.getInviteId()).orElseThrow(InviteNotExistsException::new);
 
-        var toUser = userRepository.findById(targetInvite.getToId())
-                .orElseThrow(() -> new UserNotFoundException("To"));
+        var reciverUser = userRepository.findById(targetInvite.getReciver_id())
+                .orElseThrow(() -> new UserNotFoundException("Reciver"));
 
-        if (toUser.getRelationshipId() != null){
+        if (reciverUser.getRelationshipId() != null){
 
             inviteRepository.delete(targetInvite);
 
-            throw new ToUserAlreadyInRelationshipException("To");
+            throw new UserAlreadyInRelationshipException("Reciver");
         }
 
-        var fromUser = userRepository.findById(targetInvite.getFromId())
-                .orElseThrow(() -> new UserNotFoundException("From"));
+        var senderUser = userRepository.findById(targetInvite.getSender_id())
+                .orElseThrow(() -> new UserNotFoundException("Sender"));
 
-        if (fromUser.getRelationshipId() != null){
+        if (senderUser.getRelationshipId() != null){
 
             inviteRepository.delete(targetInvite);
 
-            throw new ToUserAlreadyInRelationshipException("From");
+            throw new UserAlreadyInRelationshipException("Sender");
         }
 
         var relationshipEntity = new RelationshipEntity();
 
-        relationshipEntity.setUserId1(targetInvite.getFromId());
-        relationshipEntity.setUserId2(targetInvite.getToId());
-        relationshipEntity.setInitialDay(LocalDate.now().toString());
+        relationshipEntity.setUser_id1(targetInvite.getSender_id());
+        relationshipEntity.setUser_id2(targetInvite.getReciver_id());
+        relationshipEntity.setInitial_day(LocalDate.now().toString());
 
         var relationshipId = relationshipRepository.save(relationshipEntity).getId();
 
-        toUser.setRelationshipId(relationshipId);
-        fromUser.setRelationshipId(relationshipId);
+        reciverUser.setRelationshipId(relationshipId);
+        senderUser.setRelationshipId(relationshipId);
 
-        userRepository.save(toUser);
-        userRepository.save(fromUser);
+        userRepository.save(reciverUser);
+        userRepository.save(senderUser);
 
         inviteRepository.delete(targetInvite);
 
