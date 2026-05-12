@@ -58,3 +58,21 @@ Request body expected:
 * `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.
 * `409 - CONFLICT  ` - jwt user id and body request user id dont matches.
+
+---
+
+### GET `/relationship`
+
+Response body expected:
+
+   ```
+   {
+        "relationshipId" : 0
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
+* `401 - UNAUTHORIZED  ` - JWT invalid.
+* `404 - NOT FOUND  ` - user dont exists.

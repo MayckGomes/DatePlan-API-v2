@@ -16,6 +16,15 @@ Request body expected:
    }
    ```
 
+Response body expected
+
+   ```
+   {
+        "accessToken": "",
+        "refreshToken": ""
+   }
+   ```
+
 #### Returns
 
  * `400 - BAD REQUEST` - Invalid parameters(null parameters, size invalid or email invalid) .
@@ -31,6 +40,15 @@ Request body expected:
    {
         "email": "",
         "password": ""
+   }
+   ```
+
+Response body expected
+
+   ```
+   {
+        "accessToken": "",
+        "refreshToken": ""
    }
    ```
 
@@ -61,6 +79,15 @@ Request body expected:
 ### POST `/refreshToken`
 
 header expect: Authorization: Bearer <Token>
+
+Response body expected
+
+   ```
+   {
+        "accessToken": "",
+        "refreshToken": ""
+   }
+   ```
 
 #### Returns
 
