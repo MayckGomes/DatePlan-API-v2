@@ -1,7 +1,6 @@
 # User Routes
 
 ## All routes starts with `/users`
-with except DELETE method.
 
 --- 
 
@@ -42,7 +41,7 @@ Request body expected:
 
 ---
 
-### DELETE `/users`
+### DELETE `/`
 
 Request body expected:
 
