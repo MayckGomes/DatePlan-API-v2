@@ -1,4 +1,4 @@
-package com.mayckgomes.dateplan_api.dto;
+package com.mayckgomes.dateplan_api.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

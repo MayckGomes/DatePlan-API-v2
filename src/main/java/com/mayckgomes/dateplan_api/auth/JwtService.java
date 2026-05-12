@@ -6,7 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mayckgomes.dateplan_api.domains.RefreshTokenDecoded;
 import com.mayckgomes.dateplan_api.domains.UserDomain;
-import com.mayckgomes.dateplan_api.dto.TokensResponse;
+import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import io.github.cdimascio.dotenv.Dotenv;

@@ -1,7 +1,7 @@
 package com.mayckgomes.dateplan_api.controllers;
 
 
-import com.mayckgomes.dateplan_api.dto.TokensResponse;
+import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;

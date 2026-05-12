@@ -1,7 +1,7 @@
 package com.mayckgomes.dateplan_api.services;
 
 import com.mayckgomes.dateplan_api.auth.JwtService;
-import com.mayckgomes.dateplan_api.dto.TokensResponse;
+import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
