@@ -10,7 +10,7 @@ Request body expected:
 
    ```
    {
-        "newName": ""
+        "newName": String
    }
    ```
 
@@ -28,8 +28,8 @@ Request body expected:
 
    ```
    {
-        "newPassword": ""
-        "refreshToken": ""
+        "newPassword": String
+        "refreshToken": String
    }
    ```
 
@@ -47,8 +47,8 @@ Request body expected:
 
    ```
    {
-        "id": 
-        "refreshToken": ""
+        "id": Long
+        "refreshToken": String
    }
    ```
 
@@ -67,7 +67,7 @@ Response body expected:
 
    ```
    {
-        "relationshipId" : 0
+        "relationshipId" : Long/null
    }
    ```
 

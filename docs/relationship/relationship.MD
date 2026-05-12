@@ -38,7 +38,7 @@ Request body expected:
 
    ```
    {
-        "initialDay": ""
+        "initialDay": String
    }
    ```
 

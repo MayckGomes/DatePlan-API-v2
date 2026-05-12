@@ -10,9 +10,9 @@ Request body expected:
 
    ```
    {
-        "name": "",
-        "email": "",
-        "password": ""
+        "name": String,
+        "email": String,
+        "password": String
    }
    ```
 
@@ -20,8 +20,8 @@ Response body expected
 
    ```
    {
-        "accessToken": "",
-        "refreshToken": ""
+        "accessToken": String,
+        "refreshToken": String
    }
    ```
 
@@ -38,8 +38,8 @@ Request body expected:
 
    ```
    {
-        "email": "",
-        "password": ""
+        "email": String,
+        "password": String
    }
    ```
 
@@ -47,8 +47,8 @@ Response body expected
 
    ```
    {
-        "accessToken": "",
-        "refreshToken": ""
+        "accessToken": String,
+        "refreshToken": String
    }
    ```
 
@@ -65,8 +65,8 @@ Request body expected:
 
    ```
    {
-        "accessToken": "",
-        "refreshToken": ""
+        "accessToken": String,
+        "refreshToken": String
    }
    ```
 
@@ -84,8 +84,8 @@ Response body expected
 
    ```
    {
-        "accessToken": "",
-        "refreshToken": ""
+        "accessToken": String,
+        "refreshToken": String
    }
    ```
 
