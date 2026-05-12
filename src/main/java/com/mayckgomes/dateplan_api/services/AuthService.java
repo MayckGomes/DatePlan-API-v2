@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServices {
+public class AuthService {
 
     UserRepository userRepository;
     AuthenticationManager authenticationManager;
@@ -27,7 +27,7 @@ public class AuthServices {
     RedisBlackListService redisBlackListService;
 
 
-    public AuthServices(
+    public AuthService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
             JwtService jwtService,

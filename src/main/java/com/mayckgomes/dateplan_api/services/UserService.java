@@ -2,6 +2,8 @@ package com.mayckgomes.dateplan_api.services;
 
 import com.mayckgomes.dateplan_api.auth.JwtService;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
+import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
+import com.mayckgomes.dateplan_api.exception.custom.relationship.UserRelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
@@ -12,17 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServices implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
     RedisBlackListService redisBlackListService;
     JwtService jwtService;
 
-    public UserServices(UserRepository userRepository,
-                        PasswordEncoder passwordEncoder,
-                        RedisBlackListService redisBlackListService,
-                        JwtService jwtService) {
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       RedisBlackListService redisBlackListService,
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.redisBlackListService = redisBlackListService;
@@ -90,6 +92,12 @@ public class UserServices implements UserDetailsService {
         redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
         redisBlackListService.addRefreshToken(jwtService.getTokenId(deleteUserRequest.getRefreshToken()), deleteUserRequest.getRefreshToken());
 
+    }
+
+    public UserRelationshipIdResponse getUserRelationshipId(Long userId){
+        var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+
+        return new UserRelationshipIdResponse(targetUser.getRelationshipId());
     }
 
 }

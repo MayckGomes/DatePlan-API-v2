@@ -5,7 +5,7 @@ import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
-import com.mayckgomes.dateplan_api.services.AuthServices;
+import com.mayckgomes.dateplan_api.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,32 +15,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthServices authServices;
+    private final AuthService authService;
 
-    public AuthController(AuthServices authServices) {
+    public AuthController(AuthService authService) {
 
-        this.authServices = authServices;
+        this.authService = authService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<TokensResponse> login(@Valid @RequestBody LoginRequest loginRequest){
-        return ResponseEntity.ok(authServices.login(loginRequest));
+        return ResponseEntity.ok(authService.login(loginRequest));
 
     }
 
     @PostMapping("/register")
     public ResponseEntity<TokensResponse> register(@Valid @RequestBody RegisterRequest registerRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(authServices.register(registerRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequest));
     }
 
     @PostMapping("/refreshToken")
     public ResponseEntity<TokensResponse> refreshToken(@Valid @RequestHeader("Authorization") String token ){
-        return ResponseEntity.ok(authServices.refreshToken(token));
+        return ResponseEntity.ok(authService.refreshToken(token));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest logoutRequest){
-        authServices.logout(logoutRequest);
+        authService.logout(logoutRequest);
 
         return ResponseEntity.ok().build();
     }

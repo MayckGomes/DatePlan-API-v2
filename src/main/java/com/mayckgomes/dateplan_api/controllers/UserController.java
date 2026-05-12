@@ -4,7 +4,9 @@ import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.user.ChangeNameRequest;
 import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
-import com.mayckgomes.dateplan_api.services.UserServices;
+import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
+import com.mayckgomes.dateplan_api.services.UserService;
+import org.aspectj.asm.internal.Relationship;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    UserServices userServices;
+    UserService userService;
 
-    public UserController(UserServices userServices) {
-        this.userServices = userServices;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PatchMapping("/changeName")
     public ResponseEntity<Void> changeName(Authentication authentication, @RequestBody ChangeNameRequest changeNameRequest) {
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        userServices.changeUserName(user.getId(),changeNameRequest.getNewName());
+        userService.changeUserName(user.getId(),changeNameRequest.getNewName());
 
         return ResponseEntity.ok().build();
     }
@@ -36,7 +38,7 @@ public class UserController {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        userServices.changeUserPassword(user.getId(),changePasswordRequest.getNewPassword(),accessToken,changePasswordRequest.getRefreshToken());
+        userService.changeUserPassword(user.getId(),changePasswordRequest.getNewPassword(),accessToken,changePasswordRequest.getRefreshToken());
 
         return ResponseEntity.ok().build();
 
@@ -50,9 +52,17 @@ public class UserController {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        userServices.deleteUser(user.getId(), accessToken, deleteUserRequest);
+        userService.deleteUser(user.getId(), accessToken, deleteUserRequest);
 
         return ResponseEntity.ok().build();
+
+    }
+
+    @GetMapping("/relationship")
+    public ResponseEntity<UserRelationshipIdResponse> getRelationshipId(Authentication authentication) {
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        return ResponseEntity.ok(userService.getUserRelationshipId(user.getId()));
 
     }
 }
