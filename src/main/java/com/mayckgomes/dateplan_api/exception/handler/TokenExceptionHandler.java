@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class TokenExceptionHandler {
 
     @ExceptionHandler(TokenExpiredException.class)
-    public ResponseEntity<CustomErrorResponse> TokenExpiredExceptionHandler(TokenExpiredException exception){
+    public ResponseEntity<CustomErrorResponse> handlerTokenExpiredException(TokenExpiredException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
     }
 
     @ExceptionHandler(TokenInBlackListException.class)
-    public ResponseEntity<CustomErrorResponse> TokenInBlackListExceptionHandler(TokenInBlackListException exception){
+    public ResponseEntity<CustomErrorResponse> handlerTokenInBlackListException(TokenInBlackListException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
     }
 
     @ExceptionHandler(TokenInvalidException.class)
-    public ResponseEntity<CustomErrorResponse> TokenInvalidExceptionHandler(TokenInvalidException exception){
+    public ResponseEntity<CustomErrorResponse> handlerTokenInvalidException(TokenInvalidException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
     }
 
