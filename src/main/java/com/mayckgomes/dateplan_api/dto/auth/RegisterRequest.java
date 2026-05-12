@@ -13,13 +13,15 @@ import lombok.Setter;
 @Setter
 public class RegisterRequest {
 
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @NotNull
+    @NotEmpty
     private String name;
 
     @Email
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @NotNull
+    @NotEmpty
     private String email;
 
     @Size(max = 250)
