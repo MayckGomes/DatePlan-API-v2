@@ -1,0 +1,6 @@
+CREATE TABLE relationship(
+    id BIGSERIAL PRIMARY KEY,
+    idUser1 BIGINT NOT NULL,
+    idUser2 BIGINT NOT NULL,
+    initialDay VARCHAR(50) NOT NULL
+);
