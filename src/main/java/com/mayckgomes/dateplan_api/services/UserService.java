@@ -3,6 +3,7 @@ package com.mayckgomes.dateplan_api.services;
 import com.mayckgomes.dateplan_api.auth.JwtService;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
+import com.mayckgomes.dateplan_api.entitys.UserEntity;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;

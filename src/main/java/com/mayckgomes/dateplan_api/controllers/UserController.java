@@ -6,7 +6,6 @@ import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
 import com.mayckgomes.dateplan_api.services.UserService;
-import org.aspectj.asm.internal.Relationship;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -62,7 +61,7 @@ public class UserController {
     public ResponseEntity<UserRelationshipIdResponse> getRelationshipId(Authentication authentication) {
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        return ResponseEntity.ok(userService.getUserRelationshipId(user.getId()));
+        return ResponseEntity.ok(userService.getRelationshipId(user.getId()));
 
     }
 }
