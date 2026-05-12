@@ -35,5 +35,6 @@ Request body expected:
 
 #### Returns
 
-* `400 - BAD REQUEST` - Invalid (null parameters, size invalid or token invalid) .
+* `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
+* `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.

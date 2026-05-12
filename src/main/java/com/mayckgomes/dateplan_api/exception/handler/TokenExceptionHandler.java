@@ -24,7 +24,7 @@ public class TokenExceptionHandler {
 
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<CustomErrorResponse> TokenInvalidExceptionHandler(TokenInvalidException exception){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomErrorResponse(400,exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
     }
 
 }
