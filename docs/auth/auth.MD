@@ -10,9 +10,9 @@ Request body expected:
 
    ```
    {
-        "name: "",
-        "email: "",
-        "password: ""
+        "name": "",
+        "email": "",
+        "password": ""
    }
    ```
 
@@ -29,8 +29,8 @@ Request body expected:
 
    ```
    {
-        "email: "",
-        "password: ""
+        "email": "",
+        "password": ""
    }
    ```
 
@@ -47,8 +47,8 @@ Request body expected:
 
    ```
    {
-        "accessToken: "",
-        "refreshToken: ""
+        "accessToken": "",
+        "refreshToken": ""
    }
    ```
 

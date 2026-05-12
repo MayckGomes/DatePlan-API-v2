@@ -1,7 +1,9 @@
 package com.mayckgomes.dateplan_api.services;
 
 import com.mayckgomes.dateplan_api.auth.JwtService;
+import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
+import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,6 +73,22 @@ public class UserServices implements UserDetailsService {
 
         redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
         redisBlackListService.addRefreshToken(jwtService.getTokenId(refreshToken),refreshToken);
+
+    }
+
+    public void deleteUser(Long accessTokenUserId, String accessToken, DeleteUserRequest deleteUserRequest) {
+
+        if (!accessTokenUserId.equals(deleteUserRequest.getId())) {
+
+            throw new UserIdInvalidException();
+        }
+
+        var targetUser = userRepository.findById(accessTokenUserId).orElseThrow(UserNotFoundException::new);
+
+        userRepository.delete(targetUser);
+
+        redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
+        redisBlackListService.addRefreshToken(jwtService.getTokenId(deleteUserRequest.getRefreshToken()), deleteUserRequest.getRefreshToken());
 
     }
 

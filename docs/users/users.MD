@@ -1,6 +1,7 @@
 # User Routes
 
 ## All routes starts with `/users`
+with except DELETE method.
 
 --- 
 
@@ -10,15 +11,15 @@ Request body expected:
 
    ```
    {
-        "newName: ""
+        "newName": ""
    }
    ```
 
 #### Returns
 
 * `400 - BAD REQUEST` - Invalid parameters(null parameters, size invalid) .
-* `404 - NOT FOUND  ` - user dont exists.
 * `401 - UNAUTHORIZED` - token invalid
+* `404 - NOT FOUND  ` - user dont exists.
 
 --- 
 
@@ -28,8 +29,8 @@ Request body expected:
 
    ```
    {
-        "newPassword: ""
-        "refreshToken: ""
+        "newPassword": ""
+        "refreshToken": ""
    }
    ```
 
@@ -38,3 +39,23 @@ Request body expected:
 * `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
 * `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.
+
+---
+
+### DELETE `/users`
+
+Request body expected:
+
+   ```
+   {
+        "id": 
+        "refreshToken": ""
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
+* `401 - UNAUTHORIZED  ` - JWT invalid.
+* `404 - NOT FOUND  ` - user dont exists.
+* `409 - CONFLICT  ` - jwt user id and body request user id dont matches.

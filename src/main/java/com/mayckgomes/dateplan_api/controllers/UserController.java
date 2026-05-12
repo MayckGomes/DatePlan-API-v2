@@ -3,6 +3,7 @@ package com.mayckgomes.dateplan_api.controllers;
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.user.ChangeNameRequest;
 import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
+import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -41,4 +42,17 @@ public class UserController {
 
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(
+            Authentication authentication,
+            @RequestHeader("Authentication") String accessToken,
+            @RequestBody DeleteUserRequest deleteUserRequest) {
+
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        userServices.deleteUser(user.getId(), accessToken, deleteUserRequest);
+
+        return ResponseEntity.ok().build();
+
+    }
 }
