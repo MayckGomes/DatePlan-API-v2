@@ -78,7 +78,7 @@ Request body expected:
 
 ### POST `/refreshToken`
 
-header expect: Authorization: Bearer <Token>
+header expect: Authorization: Bearer <RefreshToken>
 
 Response body expected
 
