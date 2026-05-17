@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.dto.auth;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,11 @@ import lombok.Setter;
 public class LoginRequest {
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String email;
 
     @NotNull
-    @NotEmpty
+    @NotBlank
     private String password;
 
 }

@@ -1,6 +1,5 @@
 package com.mayckgomes.dateplan_api.dto.invite;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,6 @@ import lombok.Setter;
 public class AcceptInviteRequest {
 
     @NotNull
-    @NotEmpty
     private Long inviteId;
 
 }
