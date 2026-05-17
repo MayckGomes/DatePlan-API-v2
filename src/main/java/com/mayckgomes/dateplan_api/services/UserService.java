@@ -6,7 +6,6 @@ import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
-import com.mayckgomes.dateplan_api.repositorys.RelationshipRepository;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import org.springframework.security.core.userdetails.UserDetails;
