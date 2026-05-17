@@ -1,16 +1,16 @@
 package com.mayckgomes.dateplan_api.services;
 
-import com.mayckgomes.dateplan_api.auth.JwtService;
+import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
 import com.mayckgomes.dateplan_api.entitys.UserEntity;
-import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
 import com.mayckgomes.dateplan_api.utils.CreatePublicId;
+import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -90,9 +90,7 @@ public class AuthService {
 
     public TokensResponse refreshToken(String token){
 
-        if (!token.startsWith("Bearer ") || token.isEmpty() || token == null){
-            throw new TokenInvalidException();
-        }
+        token = VerifyTokenText.verifyTokenText(token);
 
         var tokenDecoded = jwtService.decodeRefreshToken(token);
 
