@@ -4,8 +4,8 @@ import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.UserDontHaveRelationshipException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.UserRelationshipNotFoundException;
-import com.mayckgomes.dateplan_api.repositorys.RelationshipRepository;
-import com.mayckgomes.dateplan_api.repositorys.UserRepository;
+import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
+import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class RelationshipService {
 
     UserService userService;
-    RelationshipRepository relationshipRepository;
-    UserRepository userRepository;
+    RelationshipsRepository relationshipsRepository;
+    UsersRepository usersRepository;
 
     public RelationshipService(
-            RelationshipRepository relationshipRepository,
-            UserRepository userRepository,
+            RelationshipsRepository relationshipsRepository,
+            UsersRepository usersRepository,
             UserService userService
     ) {
-        this.relationshipRepository = relationshipRepository;
-        this.userRepository = userRepository;
+        this.relationshipsRepository = relationshipsRepository;
+        this.usersRepository = usersRepository;
         this.userService = userService;
     }
 
@@ -33,9 +33,9 @@ public class RelationshipService {
 
         }
 
-        var targetRelationship = relationshipRepository.findById(id).orElseThrow(RelationshipNotFoundException::new);
-        var userId1 = userRepository.findById(targetRelationship.getUserId1()).orElseThrow(() -> new UserRelationshipNotFoundException("1"));
-        var userId2 = userRepository.findById(targetRelationship.getUserId2()).orElseThrow(() -> new UserRelationshipNotFoundException("2"));
+        var targetRelationship = relationshipsRepository.findById(id).orElseThrow(RelationshipNotFoundException::new);
+        var userId1 = usersRepository.findById(targetRelationship.getUserId1()).orElseThrow(() -> new UserRelationshipNotFoundException("1"));
+        var userId2 = usersRepository.findById(targetRelationship.getUserId2()).orElseThrow(() -> new UserRelationshipNotFoundException("2"));
 
         return new RelationshipResponse(
                 targetRelationship.getId(),
@@ -54,18 +54,18 @@ public class RelationshipService {
             throw new UserDontHaveRelationshipException();
         }
 
-        var targetRelationship = relationshipRepository.findById(id).orElseThrow(RelationshipNotFoundException::new);
+        var targetRelationship = relationshipsRepository.findById(id).orElseThrow(RelationshipNotFoundException::new);
 
-        var user1 = userRepository.findById(targetRelationship.getUserId1()).orElseThrow(() -> new UserRelationshipNotFoundException("1"));
-        var user2 = userRepository.findById(targetRelationship.getUserId2()).orElseThrow(() -> new UserRelationshipNotFoundException("2"));
+        var user1 = usersRepository.findById(targetRelationship.getUserId1()).orElseThrow(() -> new UserRelationshipNotFoundException("1"));
+        var user2 = usersRepository.findById(targetRelationship.getUserId2()).orElseThrow(() -> new UserRelationshipNotFoundException("2"));
 
         user1.setRelationshipId(null);
         user2.setRelationshipId(null);
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        usersRepository.save(user1);
+        usersRepository.save(user2);
 
-        relationshipRepository.deleteById(targetRelationship.getId());
+        relationshipsRepository.deleteById(targetRelationship.getId());
 
         // TODO deletar compromissos
         // TODO deletar memorias
@@ -78,11 +78,11 @@ public class RelationshipService {
             throw new UserDontHaveRelationshipException();
         }
 
-        var targetRelationship = relationshipRepository.findById(relationshipId).orElseThrow(RelationshipNotFoundException::new);
+        var targetRelationship = relationshipsRepository.findById(relationshipId).orElseThrow(RelationshipNotFoundException::new);
 
         targetRelationship.setInitialDay(newDate);
 
-        relationshipRepository.save(targetRelationship);
+        relationshipsRepository.save(targetRelationship);
     }
 
 }

@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "relationship")
-@Table(name = "relationship")
+@Entity(name = "relationships")
+@Table(name = "relationships")
 @Getter
 @Setter
 @NoArgsConstructor
-public class RelationshipEntity {
+public class RelationshipsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

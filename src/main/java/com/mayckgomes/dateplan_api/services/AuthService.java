@@ -5,10 +5,10 @@ import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
 import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
 import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
-import com.mayckgomes.dateplan_api.entitys.UserEntity;
+import com.mayckgomes.dateplan_api.entitys.UsersEntity;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
-import com.mayckgomes.dateplan_api.repositorys.UserRepository;
+import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.CreatePublicId;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    UserRepository userRepository;
+    UsersRepository usersRepository;
     AuthenticationManager authenticationManager;
     JwtService jwtService;
     PasswordEncoder passwordEncoder;
@@ -28,13 +28,13 @@ public class AuthService {
 
 
     public AuthService(
-            UserRepository userRepository,
+            UsersRepository usersRepository,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
             PasswordEncoder passwordEncoder,
             RedisBlackListService redisBlackListService
     ) {
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
@@ -51,7 +51,7 @@ public class AuthService {
             throw new UserNotFoundException();
         }
 
-        var user = userRepository.findByEmail(loginRequest.getEmail());
+        var user = usersRepository.findByEmail(loginRequest.getEmail());
 
         return jwtService.createTokens(user.toUserDomain());
 
@@ -59,13 +59,13 @@ public class AuthService {
 
     public TokensResponse register(RegisterRequest registerRequest){
 
-        var exists = userRepository.existsByEmail(registerRequest.getEmail());
+        var exists = usersRepository.existsByEmail(registerRequest.getEmail());
 
         if(exists){
             throw new UserAlreadyExistsException();
         }
 
-        var newUser = new UserEntity();
+        var newUser = new UsersEntity();
 
         var defaultPlan = "Free";
         var defaultNotificationToken = "";
@@ -82,7 +82,7 @@ public class AuthService {
         newUser.setNotificationToken(defaultNotificationToken);
         newUser.setPlan(defaultPlan);
 
-        var savedUser = userRepository.save(newUser);
+        var savedUser = usersRepository.save(newUser);
 
         return jwtService.createTokens(savedUser.toUserDomain());
 
@@ -98,7 +98,7 @@ public class AuthService {
 
         redisBlackListService.addRefreshToken(tokenDecoded.getJwtid(),token);
 
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UsersEntity user = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return jwtService.createTokens(user.toUserDomain());
 

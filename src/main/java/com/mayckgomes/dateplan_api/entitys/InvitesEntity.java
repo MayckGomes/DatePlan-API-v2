@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "invite")
-@Table(name = "invite")
+@Entity(name = "invites")
+@Table(name = "invites")
 @NoArgsConstructor
 @Getter
 @Setter
-public class InviteEntity {
+public class InvitesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

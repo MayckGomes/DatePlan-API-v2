@@ -1,4 +1,4 @@
-CREATE TABLE relationship(
+CREATE TABLE relationships(
     id BIGSERIAL PRIMARY KEY,
     user_id1 BIGINT NOT NULL,
     user_id2 BIGINT NOT NULL,

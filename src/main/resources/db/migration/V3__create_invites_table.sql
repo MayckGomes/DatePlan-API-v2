@@ -1,4 +1,4 @@
-CREATE TABLE invite(
+CREATE TABLE invites(
     id BIGSERIAL PRIMARY KEY,
     reciver_id BIGINT NOT NULL,
     reciver_name VARCHAR(50) NOT NULL,

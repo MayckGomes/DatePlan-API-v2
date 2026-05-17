@@ -6,7 +6,7 @@ import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
-import com.mayckgomes.dateplan_api.repositorys.UserRepository;
+import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
-    UserRepository userRepository;
+    UsersRepository usersRepository;
     PasswordEncoder passwordEncoder;
     RedisBlackListService redisBlackListService;
     JwtService jwtService;
 
-    public UserService(UserRepository userRepository,
+    public UserService(UsersRepository usersRepository,
                        PasswordEncoder passwordEncoder,
                        RedisBlackListService redisBlackListService,
                        JwtService jwtService) {
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.redisBlackListService = redisBlackListService;
         this.jwtService = jwtService;
@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        var user = userRepository.findByEmail(username);
+        var user = usersRepository.findByEmail(username);
 
         if (user == null){
 
@@ -47,11 +47,11 @@ public class UserService implements UserDetailsService {
 
     public void changeUserName(Long userId,String newName){
 
-        var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         targetUser.setName(newName);
 
-        userRepository.save(targetUser);
+        usersRepository.save(targetUser);
 
     }
 
@@ -59,13 +59,13 @@ public class UserService implements UserDetailsService {
 
         accessToken = VerifyTokenText.verifyTokenText(accessToken);
 
-        var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         var encryptedPassword = (passwordEncoder.encode(newPassword));
 
         targetUser.setPassword(encryptedPassword);
 
-        userRepository.save(targetUser);
+        usersRepository.save(targetUser);
 
         redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
         redisBlackListService.addRefreshToken(jwtService.getTokenId(refreshToken),refreshToken);
@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
             throw new UserIdInvalidException();
         }
 
-        var targetUser = userRepository.findById(accessTokenUserId).orElseThrow(UserNotFoundException::new);
+        var targetUser = usersRepository.findById(accessTokenUserId).orElseThrow(UserNotFoundException::new);
 
         if (targetUser.getRelationshipId() != null) {
 
@@ -89,7 +89,7 @@ public class UserService implements UserDetailsService {
 
         }
 
-        userRepository.delete(targetUser);
+        usersRepository.delete(targetUser);
 
         redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
         redisBlackListService.addRefreshToken(jwtService.getTokenId(deleteUserRequest.getRefreshToken()), deleteUserRequest.getRefreshToken());
@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserRelationshipIdResponse getRelationshipId(Long userId){
-        var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return new UserRelationshipIdResponse(targetUser.getRelationshipId());
     }
