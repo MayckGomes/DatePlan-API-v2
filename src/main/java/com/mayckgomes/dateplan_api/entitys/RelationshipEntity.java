@@ -15,8 +15,14 @@ public class RelationshipEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long user_id1;
-    private Long user_id2;
-    private String initial_day;
+
+    @Column(name = "user_id1")
+    private Long userId1;
+
+    @Column(name = "user_id2")
+    private Long userId2;
+
+    @Column(name = "initial_day")
+    private String initialDay;
 
 }
