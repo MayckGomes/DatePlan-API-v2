@@ -36,15 +36,23 @@ public class InviteController {
     }
 
     @PostMapping("/accept")
-    public ResponseEntity<AcceptInviteResponse> acceptInvite(@RequestBody AcceptInviteRequest invite) {
+    public ResponseEntity<AcceptInviteResponse> acceptInvite(
+            Authentication authentication,
+            @RequestBody AcceptInviteRequest invite) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(invite));
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(user.getId(), invite));
     }
 
     @PostMapping("/decline")
-    public ResponseEntity<Void> declineInvite(@RequestBody DeclineInviteRequest invite) {
+    public ResponseEntity<Void> declineInvite(
+            Authentication authentication,
+            @RequestBody DeclineInviteRequest invite) {
 
-        inviteService.declineInvite(invite);
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        inviteService.declineInvite(user.getId() ,invite);
 
         return ResponseEntity.ok().build();
     }

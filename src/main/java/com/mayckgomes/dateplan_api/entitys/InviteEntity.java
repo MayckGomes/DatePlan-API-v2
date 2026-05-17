@@ -16,13 +16,23 @@ public class InviteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long reciver_id;
-    private String reciver_name;
-    private Long sender_id;
-    private String sender_name;
+    @Column(name = "reciver_id")
+    private Long reciverId;
+
+    @Column(name = "reciver_name")
+    private String reciverName;
+
+    @Column(name = "sender_id")
+    private Long senderId;
+
+    @Column(name = "sender_name")
+    private String senderName;
+
+    @Column(name = "decision_maker_id")
+    private Long idDecisionMaker;
 
     public InviteResponse toInviteResponse(){
-        return new InviteResponse(id, reciver_id, reciver_name, sender_id, sender_name);
+        return new InviteResponse(id, reciverId, reciverName, senderId, senderName);
     }
 
 }

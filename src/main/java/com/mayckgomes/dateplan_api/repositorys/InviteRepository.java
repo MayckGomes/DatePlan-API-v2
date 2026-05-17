@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface InviteRepository extends JpaRepository<InviteEntity,Long> {
 
-    List<InviteEntity> findAllByToId(Long toId);
+    List<InviteEntity> findAllByReciverId(Long reciverId);
 
 }
