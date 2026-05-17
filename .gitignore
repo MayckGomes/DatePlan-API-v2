@@ -38,3 +38,5 @@ out/
 
 .env
 application.properties
+
+*.json
