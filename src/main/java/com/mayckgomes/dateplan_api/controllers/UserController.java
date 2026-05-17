@@ -32,7 +32,7 @@ public class UserController {
     @PatchMapping("/changePassword")
     public ResponseEntity<Void> changePassword(
             Authentication authentication,
-            @RequestHeader("Authentication") String accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @RequestBody ChangePasswordRequest changePasswordRequest) {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
@@ -43,10 +43,10 @@ public class UserController {
 
     }
 
-    @DeleteMapping
+    @DeleteMapping("/")
     public ResponseEntity<Void> deleteUser(
             Authentication authentication,
-            @RequestHeader("Authentication") String accessToken,
+            @RequestHeader("Authorization") String accessToken,
             @RequestBody DeleteUserRequest deleteUserRequest) {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
