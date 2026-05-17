@@ -1,6 +1,6 @@
 package com.mayckgomes.dateplan_api.configurations;
 
-import com.mayckgomes.dateplan_api.auth.JwtService;
+import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInBlackListException;
@@ -46,9 +46,13 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             }
+
+            filterChain.doFilter(request, response);
+
         } catch (TokenExpiredException e){
+
+            SecurityContextHolder.clearContext();
 
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
@@ -58,8 +62,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                         "message": "Token is expired"
                      }\s
                    \s""");
+
             return;
         } catch (TokenInBlackListException e){
+
+            SecurityContextHolder.clearContext();
 
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
@@ -69,10 +76,9 @@ public class SecurityFilter extends OncePerRequestFilter {
                         "message": "Token is blacklisted"
                      }\s
                    \s""");
+
             return;
         }
-
-        filterChain.doFilter(request, response);
 
     }
 }

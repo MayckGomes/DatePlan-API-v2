@@ -1,13 +1,14 @@
 package com.mayckgomes.dateplan_api.services;
 
-import com.mayckgomes.dateplan_api.auth.JwtService;
+import com.mayckgomes.dateplan_api.exception.custom.invite.UserHaveARelationshipException;
+import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
 import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
-import com.mayckgomes.dateplan_api.entitys.UserEntity;
-import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
+import com.mayckgomes.dateplan_api.repositorys.RelationshipRepository;
 import com.mayckgomes.dateplan_api.repositorys.UserRepository;
+import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,13 +58,7 @@ public class UserService implements UserDetailsService {
 
     public void changeUserPassword(Long userId,String newPassword, String accessToken, String refreshToken){
 
-        if (accessToken.isEmpty() || accessToken == null || !accessToken.startsWith("Bearer ")) {
-
-            throw new TokenInvalidException();
-
-        }
-
-        accessToken = accessToken.replace("Bearer ", "");
+        accessToken = VerifyTokenText.verifyTokenText(accessToken);
 
         var targetUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
@@ -80,12 +75,20 @@ public class UserService implements UserDetailsService {
 
     public void deleteUser(Long accessTokenUserId, String accessToken, DeleteUserRequest deleteUserRequest) {
 
+        accessToken = VerifyTokenText.verifyTokenText(accessToken);
+
         if (!accessTokenUserId.equals(deleteUserRequest.getId())) {
 
             throw new UserIdInvalidException();
         }
 
         var targetUser = userRepository.findById(accessTokenUserId).orElseThrow(UserNotFoundException::new);
+
+        if (targetUser.getRelationshipId() != null) {
+
+            throw new UserHaveARelationshipException();
+
+        }
 
         userRepository.delete(targetUser);
 

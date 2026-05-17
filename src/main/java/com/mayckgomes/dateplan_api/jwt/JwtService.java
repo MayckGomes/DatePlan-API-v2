@@ -1,4 +1,4 @@
-package com.mayckgomes.dateplan_api.auth;
+package com.mayckgomes.dateplan_api.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
