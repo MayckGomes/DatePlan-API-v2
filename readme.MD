@@ -75,11 +75,11 @@ dateplan-api-v2/
 
 ## 📚 Documentação
 
-- [Auth](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/auth)
-- [Users](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/users)
-- [Relationships](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/relationships)
-- [Invites](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/invites)
-- [Dates](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/dates)
+- [Auth](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/auth/auth.MD)
+- [Users](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/users/users.MD)
+- [Relationships](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/relationship/relationship.MD)
+- [Invites](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/invite/invite.MD)
+- [Dates](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/date/date.MD)
 
 ---
 
