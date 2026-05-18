@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.entitys;
 
+import com.mayckgomes.dateplan_api.dto.date.DateResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,21 @@ public class DatesEntity {
 
     @Column(name = "id_author")
     private Long authorId;
+
+    public DateResponse toDateResponse(){
+
+        return new DateResponse(
+                id,
+                date,
+                time,
+                local,
+                title,
+                description,
+                iconId,
+                relationshipId,
+                authorId
+        );
+
+    }
 
 }
