@@ -5,7 +5,7 @@ CREATE TABLE dates(
     local VARCHAR(250) NOT NULL,
     title VARCHAR(500) NOT NULL,
     description VARCHAR(500) NOT NULL,
-    id_icon INTEGER NOT NULL,
-    id_relationship INTEGER NOT NULL,
-    id_author INTEGER NOT NULL
+    id_icon BIGINT NOT NULL,
+    id_relationship BIGINT NOT NULL,
+    id_author BIGINT NOT NULL
 );

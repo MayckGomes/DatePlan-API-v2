@@ -28,38 +28,51 @@ public class JwtService {
 
     final private Algorithm algorithm = Algorithm.HMAC256(secret);
 
-    public TokensResponse createTokens(UserDomain user){
+    public String createAccessToken(UserDomain user){
 
         int fifteenMinutesInSeconds = 900;
-        int tenSeconds = 10;
-        int oneWeekInSeconds = 604800;
 
         Instant expireTimeAccess = Instant.now().plusSeconds(fifteenMinutesInSeconds);
-        Instant expireTimeRefresh = Instant.now().plusSeconds(oneWeekInSeconds);
 
         String accessTokenId = UUID.randomUUID().toString();
+
+        return JWT.create()
+                .withJWTId(accessTokenId)
+                .withClaim("id", user.getId())
+                .withClaim("name", user.getName())
+                .withClaim("email", user.getEmail())
+                .withClaim("relationshipId", user.getRelationshipId())
+                .withClaim("publicId", user.getPublicId())
+                .withClaim("plan", user.getPlan())
+                .withExpiresAt(expireTimeAccess)
+                .withAudience(audience)
+                .withIssuer(issuer)
+                .sign(algorithm);
+
+    }
+
+    public String createRefreshToken(UserDomain user){
+
+        int oneWeekInSeconds = 604800;
+
+        Instant expireTimeRefresh = Instant.now().plusSeconds(oneWeekInSeconds);
+
         String refreshTokenId = UUID.randomUUID().toString();
 
+        return JWT.create()
+                .withJWTId(refreshTokenId)
+                .withClaim("id", user.getId())
+                .withExpiresAt(expireTimeRefresh)
+                .withAudience(audience)
+                .withIssuer(issuer)
+                .sign(algorithm);
+
+    }
+
+    public TokensResponse createTokens(UserDomain user){
+
         return new TokensResponse(
-                JWT.create()
-                        .withJWTId(accessTokenId)
-                        .withClaim("id", user.getId())
-                        .withClaim("name", user.getName())
-                        .withClaim("email", user.getEmail())
-                        .withClaim("relationshipId", user.getRelationshipId())
-                        .withClaim("publicId", user.getPublicId())
-                        .withClaim("plan", user.getPlan())
-                        .withExpiresAt(expireTimeAccess)
-                        .withAudience(audience)
-                        .withIssuer(issuer)
-                        .sign(algorithm),
-                JWT.create()
-                        .withJWTId(refreshTokenId)
-                        .withClaim("id", user.getId())
-                        .withExpiresAt(expireTimeRefresh)
-                        .withAudience(audience)
-                        .withIssuer(issuer)
-                        .sign(algorithm)
+                createAccessToken(user),createRefreshToken(user)
         );
     }
 

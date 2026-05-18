@@ -13,17 +13,19 @@ Behavior expected:
 Response body expected:
 
    ```
-   {
-        "id": Long
-        "date": String,
-        "time": String
-        "local": String
-        "title": String
-        "description": String
-        "iconId": Long
-        "relationshipId": Long
-        "authorId": Long
-   }
+   [
+       {
+            "id": Long
+            "date": String,
+            "time": String
+            "local": String
+            "title": String
+            "description": String
+            "iconId": Long
+            "relationshipId": Long
+            "authorId": Long
+       }
+   ]
    ```
 
 #### Returns

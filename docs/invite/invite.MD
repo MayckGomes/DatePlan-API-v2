@@ -73,6 +73,7 @@ Response body expected
    ```
    {
         "relationshipId": Long
+        "accessToken: String
    }
    ```
 
@@ -80,8 +81,8 @@ Response body expected
 
 * `400 - BAD REQUEST` - Invalid parameters(null parameters).
 * `403 - FORBBIDEN` - User is not the decision maker.
-* `404 - NOT FOUND` - User (from or to) not exists, invite not exists.
-* `409 - CONFLIT` - User (from or to) already in relationship.
+* `404 - NOT FOUND` - User (sender or reciver) not exists, invite not exists.
+* `409 - CONFLIT` - User (sender or reciver) already in relationship.
 
 ---
 

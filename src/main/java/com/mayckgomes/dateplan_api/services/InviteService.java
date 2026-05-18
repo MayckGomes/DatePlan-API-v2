@@ -7,9 +7,11 @@ import com.mayckgomes.dateplan_api.exception.custom.invite.InviteNotFoundExcepti
 import com.mayckgomes.dateplan_api.exception.custom.invite.NotDecisionMakerException;
 import com.mayckgomes.dateplan_api.exception.custom.invite.UserHaveARelationshipException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
+import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.repositorys.InvitesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
+import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +24,19 @@ public class InviteService {
     InvitesRepository invitesRepository;
     UsersRepository usersRepository;
     RelationshipsRepository relationshipsRepository;
+    JwtService jwtService;
+    RedisBlackListService redisBlackListService;
 
     public InviteService(InvitesRepository invitesRepository,
                          UsersRepository usersRepository,
-                         RelationshipsRepository relationshipsRepository) {
+                         RelationshipsRepository relationshipsRepository,
+                         JwtService jwtService,
+                         RedisBlackListService redisBlackListService) {
         this.invitesRepository = invitesRepository;
         this.usersRepository = usersRepository;
         this.relationshipsRepository = relationshipsRepository;
+        this.jwtService = jwtService;
+        this.redisBlackListService = redisBlackListService;
     }
 
     @Transactional
@@ -72,9 +80,12 @@ public class InviteService {
     }
 
     @Transactional
-    public AcceptInviteResponse acceptInvite(Long userId,AcceptInviteRequest invite) {
+    public AcceptInviteResponse acceptInvite(String accessToken, Long userId, AcceptInviteRequest invite) {
 
-        var targetInvite = invitesRepository.findById(invite.getInviteId()).orElseThrow(InviteNotFoundException::new);
+        accessToken = VerifyTokenText.verifyTokenText(accessToken);
+
+        var targetInvite = invitesRepository.findById(invite.getInviteId())
+                .orElseThrow(InviteNotFoundException::new);
 
         if (!targetInvite.getIdDecisionMaker().equals(userId)) {
             throw new NotDecisionMakerException();
@@ -116,7 +127,11 @@ public class InviteService {
 
         invitesRepository.delete(targetInvite);
 
-        return new AcceptInviteResponse(relationshipId);
+        redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken), accessToken);
+
+        var newAccessToken = jwtService.createAccessToken(reciverUser.toUserDomain());
+
+        return new AcceptInviteResponse(relationshipId, newAccessToken);
 
     }
 

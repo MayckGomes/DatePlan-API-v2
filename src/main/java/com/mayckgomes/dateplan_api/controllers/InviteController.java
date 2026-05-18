@@ -6,6 +6,7 @@ import com.mayckgomes.dateplan_api.services.InviteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.headers.HeadersSecurityMarker;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,11 +39,12 @@ public class InviteController {
     @PostMapping("/accept")
     public ResponseEntity<AcceptInviteResponse> acceptInvite(
             Authentication authentication,
+            @RequestHeader("Authorization") String accessToken,
             @RequestBody AcceptInviteRequest invite) {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(user.getId(), invite));
+        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(accessToken, user.getId(), invite));
     }
 
     @PostMapping("/decline")

@@ -52,7 +52,7 @@ public class DateController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteDate(@Valid DeleteDateRequest dateRequest){
+    public ResponseEntity<Void> deleteDate(@Valid @RequestBody DeleteDateRequest dateRequest){
 
         dateService.deleteDate(dateRequest.getDateId());
 
