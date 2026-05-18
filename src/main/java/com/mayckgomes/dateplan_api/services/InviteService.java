@@ -3,7 +3,7 @@ package com.mayckgomes.dateplan_api.services;
 import com.mayckgomes.dateplan_api.dto.invite.*;
 import com.mayckgomes.dateplan_api.entitys.InvitesEntity;
 import com.mayckgomes.dateplan_api.entitys.RelationshipsEntity;
-import com.mayckgomes.dateplan_api.exception.custom.invite.InviteNotExistsException;
+import com.mayckgomes.dateplan_api.exception.custom.invite.InviteNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.invite.NotDecisionMakerException;
 import com.mayckgomes.dateplan_api.exception.custom.invite.UserHaveARelationshipException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
@@ -74,7 +74,7 @@ public class InviteService {
     @Transactional
     public AcceptInviteResponse acceptInvite(Long userId,AcceptInviteRequest invite) {
 
-        var targetInvite = invitesRepository.findById(invite.getInviteId()).orElseThrow(InviteNotExistsException::new);
+        var targetInvite = invitesRepository.findById(invite.getInviteId()).orElseThrow(InviteNotFoundException::new);
 
         if (!targetInvite.getIdDecisionMaker().equals(userId)) {
             throw new NotDecisionMakerException();
@@ -122,7 +122,7 @@ public class InviteService {
 
     public void declineInvite(Long userId, DeclineInviteRequest declineInviteRequest) {
 
-        var targetInvite = invitesRepository.findById(declineInviteRequest.getInviteId()).orElseThrow(InviteNotExistsException::new);
+        var targetInvite = invitesRepository.findById(declineInviteRequest.getInviteId()).orElseThrow(InviteNotFoundException::new);
 
         if (!targetInvite.getIdDecisionMaker().equals(userId)) {
             throw new NotDecisionMakerException();
