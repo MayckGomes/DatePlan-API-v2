@@ -4,6 +4,8 @@ import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.UserDontHaveRelationshipException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.UserRelationshipNotFoundException;
+import com.mayckgomes.dateplan_api.repositorys.DatesRepository;
+import com.mayckgomes.dateplan_api.repositorys.MemoriesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import jakarta.transaction.Transactional;
@@ -14,14 +16,20 @@ public class RelationshipService {
 
     UserService userService;
     RelationshipsRepository relationshipsRepository;
+    DatesRepository datesRepository;
+    MemoriesRepository memoriesRepository;
     UsersRepository usersRepository;
 
     public RelationshipService(
             RelationshipsRepository relationshipsRepository,
+            DatesRepository datesRepository,
+            MemoriesRepository memoriesRepository,
             UsersRepository usersRepository,
             UserService userService
     ) {
         this.relationshipsRepository = relationshipsRepository;
+        this.datesRepository = datesRepository;
+        this.memoriesRepository = memoriesRepository;
         this.usersRepository = usersRepository;
         this.userService = userService;
     }
@@ -65,10 +73,11 @@ public class RelationshipService {
         usersRepository.save(user1);
         usersRepository.save(user2);
 
-        relationshipsRepository.deleteById(targetRelationship.getId());
+        datesRepository.deleteAllByRelationshipId(targetRelationship.getId());
 
-        // TODO deletar compromissos
-        // TODO deletar memorias
+        memoriesRepository.deleteAllByRelationshipId(targetRelationship.getId());
+
+        relationshipsRepository.deleteById(targetRelationship.getId());
 
     }
 
