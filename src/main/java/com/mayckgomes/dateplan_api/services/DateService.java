@@ -18,8 +18,7 @@ public class DateService {
     DatesRepository datesRepository;
     RelationshipsRepository relationshipsRepository;
 
-    public DateService(DatesRepository datesRepository, RelationshipsRepository relationshipsRepository)
-    {
+    public DateService(DatesRepository datesRepository, RelationshipsRepository relationshipsRepository) {
         this.datesRepository = datesRepository;
         this.relationshipsRepository = relationshipsRepository;
     }

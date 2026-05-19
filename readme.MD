@@ -80,6 +80,7 @@ dateplan-api-v2/
 - [Relationships](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/relationship/relationship.MD)
 - [Invites](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/invite/invite.MD)
 - [Dates](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/date/date.MD)
+- [Memories](https://github.com/MayckGomes/dateplan-api-v2/tree/master/docs/memories/memories.MD)
 
 ---
 
