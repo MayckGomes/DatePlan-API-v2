@@ -53,7 +53,7 @@ public class UserController {
 
         userService.deleteUser(user.getId(), accessToken, deleteUserRequest);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
 
     }
 

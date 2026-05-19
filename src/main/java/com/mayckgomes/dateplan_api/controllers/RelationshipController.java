@@ -4,11 +4,8 @@ import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.relationship.ChangeInitialDayRequest;
 import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;
 import com.mayckgomes.dateplan_api.services.RelationshipService;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +33,7 @@ public class RelationshipController {
 
         relationshipService.deleteRelationshipById(user.getRelationshipId());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
 
     }
 
