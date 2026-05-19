@@ -8,6 +8,7 @@ import com.mayckgomes.dateplan_api.repositorys.DatesRepository;
 import com.mayckgomes.dateplan_api.repositorys.MemoriesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
+import com.mayckgomes.dateplan_api.utils.SendNotification;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,9 @@ public class RelationshipService {
         memoriesRepository.deleteAllByRelationshipId(targetRelationship.getId());
 
         relationshipsRepository.deleteById(targetRelationship.getId());
+
+        SendNotification.sendRefresh(user1.getNotificationToken());
+        SendNotification.sendRefresh(user2.getNotificationToken());
 
     }
 

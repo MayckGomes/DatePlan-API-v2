@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.services;
 
+import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.date.CreateDateRequest;
 import com.mayckgomes.dateplan_api.dto.date.DateResponse;
 import com.mayckgomes.dateplan_api.dto.date.EditDateRequest;
@@ -8,6 +9,7 @@ import com.mayckgomes.dateplan_api.exception.custom.date.DateNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.DatesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
+import com.mayckgomes.dateplan_api.utils.SendNotification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +40,7 @@ public class DateService {
 
     }
 
-    public DateResponse createDate(CreateDateRequest dateRequest){
+    public DateResponse createDate(UserDomain user, CreateDateRequest dateRequest){
 
         var existsRelationship = relationshipsRepository.existsById(dateRequest.getRelationshipId());
 
@@ -48,11 +50,13 @@ public class DateService {
 
         var savedDate = datesRepository.save(dateRequest.toDatesEntity());
 
+        SendNotification.sendNewDate(user.getNotificationToken(), savedDate.toDateResponse());
+
         return savedDate.toDateResponse();
 
     }
 
-    public DateResponse editDate(EditDateRequest dateRequest){
+    public DateResponse editDate(UserDomain user,EditDateRequest dateRequest){
 
         var existsRelationship = relationshipsRepository.existsById(dateRequest.getRelationshipId());
 
@@ -68,17 +72,18 @@ public class DateService {
 
         var savedDate = datesRepository.save(dateRequest.toDatesEntity());
 
+        SendNotification.sendEditDate(user.getNotificationToken(), savedDate.toDateResponse());
+
         return savedDate.toDateResponse();
 
     }
 
-    public void deleteDate(Long dateId){
+    public void deleteDate(UserDomain user, Long dateId){
 
-        var existsDate = datesRepository.existsById(dateId);
+        var targetDate = datesRepository.findById(dateId)
+                .orElseThrow(DateNotFoundException::new);
 
-        if(!existsDate){
-            throw new DateNotFoundException();
-        }
+        SendNotification.sendDelete(user.getNotificationToken(), targetDate.toDateResponse());
 
         datesRepository.deleteById(dateId);
 

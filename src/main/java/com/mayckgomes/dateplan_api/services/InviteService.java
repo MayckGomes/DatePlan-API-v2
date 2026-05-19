@@ -11,6 +11,7 @@ import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.repositorys.InvitesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
+import com.mayckgomes.dateplan_api.utils.SendNotification;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,8 @@ public class InviteService {
         inviteEntity.setIdDecisionMaker(reciverUser.getId());
 
         var inviteId = invitesRepository.save(inviteEntity).getId();
+
+        SendNotification.sendInvite(reciverUser.getNotificationToken());
 
         return new CreateInviteResponse(inviteId);
 

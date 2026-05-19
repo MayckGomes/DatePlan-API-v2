@@ -37,24 +37,34 @@ public class DateController {
 
     @PostMapping("/create")
     public ResponseEntity<DateResponse> createDate(
+            Authentication authentication,
             @Valid @RequestBody CreateDateRequest dateRequest){
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(dateService.createDate(dateRequest));
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(dateService.createDate(user, dateRequest));
 
     }
 
     @PutMapping("/edit")
     public ResponseEntity<DateResponse> editDate(
+            Authentication authentication,
             @Valid @RequestBody EditDateRequest dateRequest){
 
-        return ResponseEntity.ok(dateService.editDate(dateRequest));
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        return ResponseEntity.ok(dateService.editDate(user, dateRequest));
 
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteDate(@Valid @RequestBody DeleteDateRequest dateRequest){
+    public ResponseEntity<Void> deleteDate(
+            Authentication authentication,
+            @Valid @RequestBody DeleteDateRequest dateRequest){
 
-        dateService.deleteDate(dateRequest.getDateId());
+        UserDomain user = (UserDomain) authentication.getPrincipal();
+
+        dateService.deleteDate(user, dateRequest.getDateId());
 
         return ResponseEntity.noContent().build();
 
