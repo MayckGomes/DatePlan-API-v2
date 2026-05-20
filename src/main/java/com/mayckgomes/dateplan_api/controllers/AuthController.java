@@ -1,10 +1,7 @@
 package com.mayckgomes.dateplan_api.controllers;
 
 
-import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
-import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
-import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
-import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
+import com.mayckgomes.dateplan_api.dto.auth.*;
 import com.mayckgomes.dateplan_api.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -26,6 +23,11 @@ public class AuthController {
     public ResponseEntity<TokensResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authService.login(loginRequest));
 
+    }
+
+    @PostMapping("/autoLogin")
+    public ResponseEntity<TokensResponse> autoLogin(@Valid @RequestBody TokensRequest tokensRequest){
+        return ResponseEntity.ok(authService.autoLogin(tokensRequest));
     }
 
     @PostMapping("/register")

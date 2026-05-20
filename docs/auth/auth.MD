@@ -59,6 +59,33 @@ Response body expected
 
 ---
 
+### POST `/autoLogin`
+
+Request body expected:
+
+   ```
+   {
+        "accessToken": String,
+        "refreshToken": String
+   }
+   ```
+
+Response body expected
+
+   ```
+   {
+        "accessToken": String,
+        "refreshToken": String
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid parameters.
+* `404 - NOT FOUND` - user dont exists.
+
+---
+
 ### POST `/logout`
 
 Request body expected:

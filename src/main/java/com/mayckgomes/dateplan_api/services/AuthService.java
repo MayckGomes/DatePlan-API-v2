@@ -1,10 +1,7 @@
 package com.mayckgomes.dateplan_api.services;
 
+import com.mayckgomes.dateplan_api.dto.auth.*;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
-import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
-import com.mayckgomes.dateplan_api.dto.auth.LoginRequest;
-import com.mayckgomes.dateplan_api.dto.auth.LogoutRequest;
-import com.mayckgomes.dateplan_api.dto.auth.RegisterRequest;
 import com.mayckgomes.dateplan_api.entitys.UsersEntity;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
@@ -54,6 +51,20 @@ public class AuthService {
         var user = usersRepository.findByEmail(loginRequest.getEmail());
 
         return jwtService.createTokens(user.toUserDomain());
+
+    }
+
+    public TokensResponse autoLogin(TokensRequest tokensRequest){
+
+        var jwtUser = jwtService.decodeAccessToken(tokensRequest.getAccessToken());
+
+        var targetUser = usersRepository.findById(jwtUser.getId())
+                .orElseThrow(UserNotFoundException::new);
+
+        redisBlackListService.addAccessToken(jwtService.getTokenId(tokensRequest.getAccessToken()), tokensRequest.getAccessToken());
+        redisBlackListService.addRefreshToken(jwtService.getTokenId(tokensRequest.getRefreshToken()), tokensRequest.getRefreshToken());
+
+        return jwtService.createTokens(targetUser.toUserDomain());
 
     }
 
