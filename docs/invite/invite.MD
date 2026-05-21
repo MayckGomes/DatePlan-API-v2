@@ -31,7 +31,7 @@ Response body expected
 
 ---
 
-### GET `/toUser`
+### GET `/toMe`
 
 Behavior expected:
 
@@ -43,10 +43,10 @@ Response body expected
    [
         {
             "id": Long,
-            "toId": Long,
-            "toName": String,
-            "fromId": Long,
-            "fromName": String,
+            "reciverId": Long,
+            "reciverName": String,
+            "senderId": Long,
+            "senderName": String,
         }
    ]
    ```

@@ -56,9 +56,9 @@ public class AuthService {
 
     public TokensResponse autoLogin(TokensRequest tokensRequest){
 
-        var jwtUser = jwtService.decodeAccessToken(tokensRequest.getAccessToken());
+        var refresh = jwtService.decodeRefreshToken(tokensRequest.getRefreshToken());
 
-        var targetUser = usersRepository.findById(jwtUser.getId())
+        var targetUser = usersRepository.findById(refresh.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         redisBlackListService.addAccessToken(jwtService.getTokenId(tokensRequest.getAccessToken()), tokensRequest.getAccessToken());

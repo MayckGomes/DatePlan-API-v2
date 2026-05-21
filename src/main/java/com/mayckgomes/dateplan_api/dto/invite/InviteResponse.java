@@ -10,9 +10,9 @@ import lombok.Setter;
 public class InviteResponse {
 
     private Long id;
-    private Long toId;
-    private String toName;
-    private Long fromId;
-    private String fromName;
+    private Long reciverId;
+    private String reciverName;
+    private Long senderId;
+    private String senderName;
 
 }

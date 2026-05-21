@@ -26,7 +26,7 @@ public class InviteController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(inviteService.createInvite(createInviteRequest));
     }
 
-    @GetMapping("/toUser")
+    @GetMapping("/toMe")
     public ResponseEntity<List<InviteResponse>> getInvitesByToUser(Authentication authentication) {
 
         var user = (UserDomain) authentication.getPrincipal();
