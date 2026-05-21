@@ -37,7 +37,7 @@ public class RelationshipController {
 
     }
 
-    @PutMapping("/initialDay")
+    @PatchMapping("/initialDay")
     public ResponseEntity<Void> changeInitialDay(Authentication authentication, @RequestBody ChangeInitialDayRequest initialDayRequest){
 
         var user = (UserDomain) authentication.getPrincipal();

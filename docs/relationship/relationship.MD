@@ -10,6 +10,19 @@ Behavior expected:
 
 `The relationship id is get by access token`
 
+Response body expected:
+
+   ```
+   {
+        "id": Long
+        "userId1": Long
+        "nameUser1": String
+        "userId2": Long
+        "nameUser2": String
+        "nameUser2": Long
+   }
+   ```
+
 
 #### Returns
 
@@ -32,7 +45,7 @@ Behavior expected:
 
 ---
 
-### PUT `/initialDay`
+### PATCH `/initialDay`
 
 Request body expected:
 

@@ -55,7 +55,6 @@ public class RelationshipService {
                 targetRelationship.getInitialDay()
                 );
     }
-
     @Transactional
     public void deleteRelationshipById(Long id){
 
