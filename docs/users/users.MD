@@ -76,3 +76,20 @@ Response body expected:
 * `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
 * `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.
+---
+
+### PATCH `/updateNotificationToken`
+
+Response body expected:
+
+   ```
+   {
+        "notificationToken" : String
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
+* `401 - UNAUTHORIZED  ` - JWT invalid.
+* `404 - NOT FOUND  ` - user dont exists.

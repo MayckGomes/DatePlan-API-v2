@@ -1,11 +1,9 @@
 package com.mayckgomes.dateplan_api.controllers;
 
 import com.mayckgomes.dateplan_api.domains.UserDomain;
-import com.mayckgomes.dateplan_api.dto.user.ChangeNameRequest;
-import com.mayckgomes.dateplan_api.dto.user.ChangePasswordRequest;
-import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
-import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
+import com.mayckgomes.dateplan_api.dto.user.*;
 import com.mayckgomes.dateplan_api.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +60,19 @@ public class UserController {
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
         return ResponseEntity.ok(userService.getRelationshipId(user.getId()));
+
+    }
+
+    @PatchMapping("/updateNotificationToken")
+    public ResponseEntity<Void> updateNotificationToken(
+            @Valid @RequestBody UpdateNotificationTokenRequest notificationTokenRequest,
+            Authentication authentication){
+
+        var user = (UserDomain) authentication.getPrincipal();
+
+        userService.updateNotificationToken(user.getId(), notificationTokenRequest);
+
+        return ResponseEntity.ok().build();
 
     }
 }

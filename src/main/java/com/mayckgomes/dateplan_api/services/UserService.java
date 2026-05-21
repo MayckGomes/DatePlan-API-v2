@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.services;
 
+import com.mayckgomes.dateplan_api.dto.user.UpdateNotificationTokenRequest;
 import com.mayckgomes.dateplan_api.exception.custom.invite.UserHaveARelationshipException;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
@@ -8,6 +9,7 @@ import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -100,6 +102,18 @@ public class UserService implements UserDetailsService {
         var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return new UserRelationshipIdResponse(targetUser.getRelationshipId());
+    }
+
+    @Transactional
+    public void updateNotificationToken(Long userId, UpdateNotificationTokenRequest notificationTokenRequest){
+
+        var targetUser = usersRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        targetUser.setNotificationToken(notificationTokenRequest.getNotificationToken());
+
+        usersRepository.save(targetUser);
+
     }
 
 }
