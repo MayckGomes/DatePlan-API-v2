@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class ServerController {
 
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<Void> checkStatus(){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
