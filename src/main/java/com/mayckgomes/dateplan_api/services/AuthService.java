@@ -38,7 +38,7 @@ public class AuthService {
         this.redisBlackListService = redisBlackListService;
     }
 
-    public TokensResponse login(LoginRequest loginRequest){
+    public AuthResponse login(LoginRequest loginRequest){
         var userLogin = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
         try {
@@ -48,13 +48,17 @@ public class AuthService {
             throw new UserNotFoundException();
         }
 
-        var user = usersRepository.findByEmail(loginRequest.getEmail());
+        var targetUser = usersRepository.findByEmail(loginRequest.getEmail());
 
-        return jwtService.createTokens(user.toUserDomain());
+        var tokens = jwtService.createTokens(targetUser.toUserDomain());
+
+        var user = targetUser.toUserDomain().toUserResponse();
+
+        return new AuthResponse(tokens,user);
 
     }
 
-    public TokensResponse autoLogin(TokensRequest tokensRequest){
+    public AuthResponse autoLogin(TokensRequest tokensRequest){
 
         var refresh = jwtService.decodeRefreshToken(tokensRequest.getRefreshToken());
 
@@ -64,11 +68,15 @@ public class AuthService {
         redisBlackListService.addAccessToken(jwtService.getTokenId(tokensRequest.getAccessToken()), tokensRequest.getAccessToken());
         redisBlackListService.addRefreshToken(jwtService.getTokenId(tokensRequest.getRefreshToken()), tokensRequest.getRefreshToken());
 
-        return jwtService.createTokens(targetUser.toUserDomain());
+        var tokens = jwtService.createTokens(targetUser.toUserDomain());
+
+        var user = targetUser.toUserDomain().toUserResponse();
+
+        return new AuthResponse(tokens,user);
 
     }
 
-    public TokensResponse register(RegisterRequest registerRequest){
+    public AuthResponse register(RegisterRequest registerRequest){
 
         var exists = usersRepository.existsByEmail(registerRequest.getEmail());
 
@@ -95,7 +103,11 @@ public class AuthService {
 
         var savedUser = usersRepository.save(newUser);
 
-        return jwtService.createTokens(savedUser.toUserDomain());
+        var tokens = jwtService.createTokens(savedUser.toUserDomain());
+
+        var user = savedUser.toUserDomain().toUserResponse();
+
+        return new AuthResponse(tokens,user);
 
     }
 

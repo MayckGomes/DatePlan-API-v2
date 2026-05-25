@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.domains;
 
+import com.mayckgomes.dateplan_api.dto.user.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,4 +43,15 @@ public class UserDomain implements UserDetails {
     public String getUsername() {
         return name;
     }
+
+    public UserResponse toUserResponse(){
+        return new UserResponse(
+                id,
+                publicId,
+                name,
+                relationshipId,
+                plan
+        );
+    }
+
 }

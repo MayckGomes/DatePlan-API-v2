@@ -20,18 +20,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokensResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authService.login(loginRequest));
 
     }
 
     @PostMapping("/autoLogin")
-    public ResponseEntity<TokensResponse> autoLogin(@Valid @RequestBody TokensRequest tokensRequest){
+    public ResponseEntity<AuthResponse> autoLogin(@Valid @RequestBody TokensRequest tokensRequest){
         return ResponseEntity.ok(authService.autoLogin(tokensRequest));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TokensResponse> register(@Valid @RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest registerRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequest));
     }
 

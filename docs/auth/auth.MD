@@ -20,8 +20,19 @@ Response body expected
 
    ```
    {
-        "accessToken": String,
-        "refreshToken": String
+        tokens: {
+            "accessToken": String,
+            "refreshToken": String
+        },
+        
+        user: {
+            "id": Long,
+            "publicId": String,
+            "name": String,
+            "relationshipId": Long,
+            "plan": String
+        }
+        
    }
    ```
 
@@ -47,8 +58,19 @@ Response body expected
 
    ```
    {
-        "accessToken": String,
-        "refreshToken": String
+        tokens: {
+            "accessToken": String,
+            "refreshToken": String
+        },
+        
+        user: {
+            "id": Long,
+            "publicId": String,
+            "name": String,
+            "relationshipId": Long,
+            "plan": String
+        }
+        
    }
    ```
 
@@ -73,9 +95,20 @@ Request body expected:
 Response body expected
 
    ```
-   {
-        "accessToken": String,
-        "refreshToken": String
+      {
+        tokens: {
+            "accessToken": String,
+            "refreshToken": String
+        },
+        
+        user: {
+            "id": Long,
+            "publicId": String,
+            "name": String,
+            "relationshipId": Long,
+            "plan": String
+        }
+        
    }
    ```
 
