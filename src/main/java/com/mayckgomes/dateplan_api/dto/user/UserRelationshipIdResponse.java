@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class UserRelationshipIdResponse {
 
-    private Long relationshipId;
+    private String relationshipId;
 
 }

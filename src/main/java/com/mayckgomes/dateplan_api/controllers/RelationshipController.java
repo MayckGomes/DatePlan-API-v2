@@ -1,7 +1,6 @@
 package com.mayckgomes.dateplan_api.controllers;
 
 import com.mayckgomes.dateplan_api.domains.UserDomain;
-import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.dto.relationship.ChangeInitialDayRequest;
 import com.mayckgomes.dateplan_api.dto.relationship.DeleteRelationshipResponse;
 import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;

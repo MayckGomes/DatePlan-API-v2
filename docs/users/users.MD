@@ -67,7 +67,7 @@ Response body expected:
 
    ```
    {
-        "relationshipId" : Long/null
+        "relationshipId" : "Long/null" 
    }
    ```
 

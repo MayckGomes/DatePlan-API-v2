@@ -101,7 +101,15 @@ public class UserService implements UserDetailsService {
     public UserRelationshipIdResponse getRelationshipId(Long userId){
         var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-        return new UserRelationshipIdResponse(targetUser.getRelationshipId());
+        var relationshipid = targetUser.getRelationshipId().toString();
+
+        if (relationshipid.equals(null)){
+            relationshipid = "null";
+        } else {
+            relationshipid.toString();
+        }
+
+        return new UserRelationshipIdResponse(relationshipid);
     }
 
     @Transactional
