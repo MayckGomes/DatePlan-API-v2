@@ -28,7 +28,6 @@ public class MemoryController {
     public ResponseEntity<List<MemoryResponse>> getMemories(
             Authentication authentication
     ){
-
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
         return ResponseEntity.ok(memoryService.getMemories(user.getRelationshipId()));

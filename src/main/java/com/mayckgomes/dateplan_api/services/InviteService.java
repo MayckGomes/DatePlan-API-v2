@@ -134,6 +134,8 @@ public class InviteService {
 
         var newAccessToken = jwtService.createAccessToken(reciverUser.toUserDomain());
 
+        SendNotification.sendRefresh(senderUser.getNotificationToken());
+
         return new AcceptInviteResponse(relationshipId, newAccessToken);
 
     }
