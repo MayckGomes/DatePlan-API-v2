@@ -45,11 +45,21 @@ public class UserDomain implements UserDetails {
     }
 
     public UserResponse toUserResponse(){
+
+        String relationshipIdUser;
+
+        if (this.relationshipId == null) {
+
+            relationshipIdUser = "null";
+        } else {
+            relationshipIdUser = relationshipId.toString();
+        };
+
         return new UserResponse(
                 id,
                 publicId,
                 name,
-                relationshipId,
+                relationshipIdUser,
                 plan
         );
     }

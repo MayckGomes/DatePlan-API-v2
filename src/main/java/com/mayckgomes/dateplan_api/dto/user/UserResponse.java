@@ -12,7 +12,7 @@ public class UserResponse {
     private Long id;
     private String publicId;
     private String name;
-    private Long relationshipId;
+    private String relationshipId;
     private String plan;
 
 
