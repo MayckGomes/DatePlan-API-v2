@@ -12,7 +12,6 @@ import com.mayckgomes.dateplan_api.repositorys.InvitesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.SendNotification;
-import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

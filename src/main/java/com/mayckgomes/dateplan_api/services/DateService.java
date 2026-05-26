@@ -7,8 +7,10 @@ import com.mayckgomes.dateplan_api.dto.date.EditDateRequest;
 import com.mayckgomes.dateplan_api.entitys.DatesEntity;
 import com.mayckgomes.dateplan_api.exception.custom.date.DateNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
+import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.DatesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
+import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.SendNotification;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,14 @@ public class DateService {
 
     DatesRepository datesRepository;
     RelationshipsRepository relationshipsRepository;
+    UsersRepository usersRepository;
 
-    public DateService(DatesRepository datesRepository, RelationshipsRepository relationshipsRepository) {
+    public DateService(DatesRepository datesRepository,
+                       RelationshipsRepository relationshipsRepository,
+                       UsersRepository usersRepository) {
         this.datesRepository = datesRepository;
         this.relationshipsRepository = relationshipsRepository;
+        this.usersRepository = usersRepository;
     }
 
     public List<DateResponse> getDates(Long relationshipId){
@@ -42,15 +48,29 @@ public class DateService {
 
     public DateResponse createDate(UserDomain user, CreateDateRequest dateRequest){
 
-        var existsRelationship = relationshipsRepository.existsById(dateRequest.getRelationshipId());
+        var targetRelationship = relationshipsRepository.findById(dateRequest.getRelationshipId())
+                .orElseThrow(RelationshipNotFoundException::new);
 
-        if (!existsRelationship){
-            throw new RelationshipNotFoundException();
-        }
 
         var savedDate = datesRepository.save(dateRequest.toDatesEntity());
 
-        SendNotification.sendNewDate(user.getNotificationToken(), savedDate.toDateResponse());
+        UserDomain targetUser;
+
+        if (targetRelationship.getUserId1().equals(user.getId())){
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId2())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        } else {
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId1())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        }
+
+        SendNotification.sendNewDate(targetUser.getNotificationToken(), savedDate.toDateResponse());
 
         return savedDate.toDateResponse();
 
@@ -58,11 +78,8 @@ public class DateService {
 
     public DateResponse editDate(UserDomain user,EditDateRequest dateRequest){
 
-        var existsRelationship = relationshipsRepository.existsById(dateRequest.getRelationshipId());
-
-        if (!existsRelationship){
-            throw new RelationshipNotFoundException();
-        }
+        var targetRelationship = relationshipsRepository.findById(dateRequest.getRelationshipId())
+                .orElseThrow(RelationshipNotFoundException::new);
 
         var existsDate = datesRepository.existsById(dateRequest.getId());
 
@@ -72,7 +89,23 @@ public class DateService {
 
         var savedDate = datesRepository.save(dateRequest.toDatesEntity());
 
-        SendNotification.sendEditDate(user.getNotificationToken(), savedDate.toDateResponse());
+        UserDomain targetUser;
+
+        if (targetRelationship.getUserId1().equals(user.getId())){
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId2())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        } else {
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId1())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        }
+
+        SendNotification.sendEditDate(targetUser.getNotificationToken(), savedDate.toDateResponse());
 
         return savedDate.toDateResponse();
 
@@ -83,7 +116,26 @@ public class DateService {
         var targetDate = datesRepository.findById(dateId)
                 .orElseThrow(DateNotFoundException::new);
 
-        SendNotification.sendDelete(user.getNotificationToken(), targetDate.toDateResponse());
+        var targetRelationship = relationshipsRepository.findById(targetDate.getRelationshipId())
+                .orElseThrow(RelationshipNotFoundException::new);
+
+        UserDomain targetUser;
+
+        if (targetRelationship.getUserId1().equals(user.getId())){
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId2())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        } else {
+
+            targetUser = usersRepository.findById(targetRelationship.getUserId1())
+                    .orElseThrow(UserNotFoundException::new)
+                    .toUserDomain();
+
+        }
+
+        SendNotification.sendDelete(targetUser.getNotificationToken(), targetDate.toDateResponse());
 
         datesRepository.deleteById(dateId);
 
