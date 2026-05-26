@@ -1,9 +1,10 @@
 package com.mayckgomes.dateplan_api.configurations;
 
+import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
-import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInBlackListException;
+import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.services.RedisBlackListService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,11 +23,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final RedisBlackListService redisBlackListService;
+    private final UsersRepository usersRepository;
 
     public SecurityFilter(JwtService jwtService,
-                          RedisBlackListService redisBlackListService) {
+                          RedisBlackListService redisBlackListService,
+                          UsersRepository usersRepository) {
         this.jwtService = jwtService;
         this.redisBlackListService = redisBlackListService;
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -41,9 +45,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 redisBlackListService.verifyIfBlacklisted(jwtService.getTokenId(token));
 
-                UserDomain user = jwtService.decodeAccessToken(token);
+                var userId = jwtService.decodeAccessToken(token);
 
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                var user = usersRepository.findById(userId)
+                        .orElseThrow(UserNotFoundException::new);
+
+                var authentication = new UsernamePasswordAuthenticationToken(user.toUserDomain(), null, user.toUserDomain().getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -74,6 +81,20 @@ public class SecurityFilter extends OncePerRequestFilter {
                     {\s
                         "status": 401,
                         "message": "Token is blacklisted"
+                     }\s
+                   \s""");
+
+            return;
+        } catch (UserNotFoundException e){
+
+            SecurityContextHolder.clearContext();
+
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            response.setContentType("application/json");
+            response.getWriter().write("""
+                    {\s
+                        "status": 404,
+                        "message": "User not found in filter"
                      }\s
                    \s""");
 

@@ -4,6 +4,7 @@ import com.mayckgomes.dateplan_api.exception.CustomErrorResponse;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInBlackListException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidTypeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,11 @@ public class TokenExceptionHandler {
 
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<CustomErrorResponse> handlerTokenInvalidException(TokenInvalidException exception){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
+    }
+
+    @ExceptionHandler(TokenInvalidTypeException.class)
+    public ResponseEntity<CustomErrorResponse> handlerTokenInvalidTypeException(TokenInvalidTypeException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomErrorResponse(401,exception.getMessage()));
     }
 

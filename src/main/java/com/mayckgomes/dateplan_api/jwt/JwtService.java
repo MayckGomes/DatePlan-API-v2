@@ -9,6 +9,7 @@ import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidTypeException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 
@@ -39,11 +40,7 @@ public class JwtService {
         return JWT.create()
                 .withJWTId(accessTokenId)
                 .withClaim("id", user.getId())
-                .withClaim("name", user.getName())
-                .withClaim("email", user.getEmail())
-                .withClaim("relationshipId", user.getRelationshipId())
-                .withClaim("publicId", user.getPublicId())
-                .withClaim("plan", user.getPlan())
+                .withClaim("type", "Access")
                 .withExpiresAt(expireTimeAccess)
                 .withAudience(audience)
                 .withIssuer(issuer)
@@ -62,6 +59,7 @@ public class JwtService {
         return JWT.create()
                 .withJWTId(refreshTokenId)
                 .withClaim("id", user.getId())
+                .withClaim("type", "Refresh")
                 .withExpiresAt(expireTimeRefresh)
                 .withAudience(audience)
                 .withIssuer(issuer)
@@ -76,7 +74,7 @@ public class JwtService {
         );
     }
 
-    public UserDomain decodeAccessToken(String token){
+    public Long decodeAccessToken(String token){
 
         try{
 
@@ -84,15 +82,11 @@ public class JwtService {
                     .build()
                     .verify(token);
 
-            return new UserDomain(
-                    verifier.getClaim("id").asLong(),
-                    verifier.getClaim("publicId").asString(),
-                    verifier.getClaim("name").asString(),
-                    verifier.getClaim("email").asString(),
-                    verifier.getClaim("relationshipId").asLong(),
-                    verifier.getClaim("plan").asString(),
-                    verifier.getClaim("notificationToken").asString()
-            );
+            if (!verifier.getClaim("type").asString().equals("Access")){
+                throw new TokenInvalidTypeException("Access");
+            }
+
+            return verifier.getClaim("id").asLong();
 
         } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
             throw new TokenExpiredException();
@@ -110,9 +104,16 @@ public class JwtService {
                     .build()
                     .verify(token);
 
+            System.out.println(verifier.getClaim("type").asString());
+
+            if (!verifier.getClaim("type").asString().equals("Refresh")){
+                throw new TokenInvalidTypeException("Refresh");
+            }
+
             return new RefreshTokenDecoded(verifier.getId(),verifier.getClaim("id").asLong());
 
         } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
+            System.out.println(exception.getMessage());
             throw new TokenExpiredException();
         } catch (JWTVerificationException exception){
             throw new TokenInvalidException();
@@ -122,11 +123,19 @@ public class JwtService {
 
     public String getTokenId(String token){
 
-        DecodedJWT verifier = JWT.require(algorithm)
-                .build()
-                .verify(token);
+        try {
+            DecodedJWT verifier = JWT.require(algorithm)
+                    .build()
+                    .verify(token);
 
-        return verifier.getId();
+            return verifier.getId();
+
+        } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
+            throw new TokenExpiredException();
+        } catch (JWTVerificationException exception){
+            throw new TokenInvalidException();
+        }
+
 
     }
 
