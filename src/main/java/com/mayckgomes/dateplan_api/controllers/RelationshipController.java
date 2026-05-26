@@ -28,14 +28,16 @@ public class RelationshipController {
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<DeleteRelationshipResponse> deleteRelationshipById(
+    public ResponseEntity<Void> deleteRelationshipById(
             Authentication authentication,
             @RequestHeader("Authentication") String refreshToken
     ){
 
         var user = (UserDomain) authentication.getPrincipal();
 
-        return ResponseEntity.ok(relationshipService.deleteRelationshipById(user, refreshToken));
+        relationshipService.deleteRelationshipById(user);
+
+        return ResponseEntity.ok().build();
 
     }
 

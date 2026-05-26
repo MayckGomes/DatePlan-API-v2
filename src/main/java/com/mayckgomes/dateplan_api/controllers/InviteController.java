@@ -38,12 +38,11 @@ public class InviteController {
     @PostMapping("/accept")
     public ResponseEntity<AcceptInviteResponse> acceptInvite(
             Authentication authentication,
-            @RequestHeader("Authorization") String accessToken,
             @RequestBody AcceptInviteRequest invite) {
 
         UserDomain user = (UserDomain) authentication.getPrincipal();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(accessToken, user.getId(), invite));
+        return ResponseEntity.status(HttpStatus.CREATED).body(inviteService.acceptInvite(user.getId() ,invite));
     }
 
     @PostMapping("/decline")

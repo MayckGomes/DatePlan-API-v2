@@ -83,9 +83,7 @@ public class InviteService {
     }
 
     @Transactional
-    public AcceptInviteResponse acceptInvite(String accessToken, Long userId, AcceptInviteRequest invite) {
-
-        accessToken = VerifyTokenText.verifyTokenText(accessToken);
+    public AcceptInviteResponse acceptInvite(Long userId, AcceptInviteRequest invite) {
 
         var targetInvite = invitesRepository.findById(invite.getInviteId())
                 .orElseThrow(InviteNotFoundException::new);
@@ -130,13 +128,9 @@ public class InviteService {
 
         invitesRepository.delete(targetInvite);
 
-        redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken), accessToken);
-
-        var newAccessToken = jwtService.createAccessToken(reciverUser.toUserDomain());
-
         SendNotification.sendRefresh(senderUser.getNotificationToken());
 
-        return new AcceptInviteResponse(relationshipId, newAccessToken);
+        return new AcceptInviteResponse(relationshipId);
 
     }
 

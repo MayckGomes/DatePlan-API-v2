@@ -10,6 +10,5 @@ import lombok.Setter;
 public class AcceptInviteResponse {
 
     private Long relationshipId;
-    private String accessToken;
 
 }

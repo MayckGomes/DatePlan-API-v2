@@ -66,9 +66,7 @@ public class RelationshipService {
                 );
     }
     @Transactional
-    public DeleteRelationshipResponse deleteRelationshipById(UserDomain user, String accessToken){
-
-        accessToken = VerifyTokenText.verifyTokenText(accessToken);
+    public void deleteRelationshipById(UserDomain user){
 
         if (user.getRelationshipId() == null){
             throw new UserDontHaveRelationshipException();
@@ -95,10 +93,6 @@ public class RelationshipService {
         SendNotification.sendRefresh(user2.getNotificationToken());
 
         user.setRelationshipId(null);
-
-        redisBlackListService.addAccessToken(jwtService.getTokenId(accessToken),accessToken);
-
-        return new DeleteRelationshipResponse(jwtService.createAccessToken(user));
 
     }
 
