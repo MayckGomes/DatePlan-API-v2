@@ -29,7 +29,7 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": Long,
+            "relationshipId": "Long/null",
             "plan": String
         }
         
@@ -67,7 +67,7 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": Long,
+            "relationshipId": "Long/null",
             "plan": String
         }
         
@@ -105,7 +105,7 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": Long,
+            "relationshipId": "Long/null",
             "plan": String
         }
         
