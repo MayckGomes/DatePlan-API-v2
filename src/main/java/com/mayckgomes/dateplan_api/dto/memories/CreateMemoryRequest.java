@@ -1,6 +1,5 @@
 package com.mayckgomes.dateplan_api.dto.memories;
 
-import com.mayckgomes.dateplan_api.entitys.DatesEntity;
 import com.mayckgomes.dateplan_api.entitys.MemoriesEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

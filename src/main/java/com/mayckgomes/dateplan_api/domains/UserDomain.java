@@ -53,7 +53,7 @@ public class UserDomain implements UserDetails {
             relationshipIdUser = "null";
         } else {
             relationshipIdUser = relationshipId.toString();
-        };
+        }
 
         return new UserResponse(
                 id,
