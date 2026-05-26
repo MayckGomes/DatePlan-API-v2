@@ -29,7 +29,6 @@ public class CreateDateRequest {
     private String title;
 
     @NotNull
-    @NotBlank
     private String description;
 
     @NotNull

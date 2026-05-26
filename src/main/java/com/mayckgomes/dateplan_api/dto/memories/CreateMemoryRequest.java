@@ -26,7 +26,6 @@ public class CreateMemoryRequest {
     private String title;
 
     @NotNull
-    @NotBlank
     private String description;
 
     @NotNull

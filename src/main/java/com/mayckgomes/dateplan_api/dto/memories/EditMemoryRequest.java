@@ -28,7 +28,6 @@ public class EditMemoryRequest {
     private String title;
 
     @NotNull
-    @NotBlank
     private String description;
 
     @NotNull

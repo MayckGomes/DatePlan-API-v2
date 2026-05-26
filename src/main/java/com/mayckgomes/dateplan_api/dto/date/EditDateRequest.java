@@ -32,7 +32,6 @@ public class EditDateRequest {
     private String title;
 
     @NotNull
-    @NotBlank
     private String description;
 
     @NotNull
