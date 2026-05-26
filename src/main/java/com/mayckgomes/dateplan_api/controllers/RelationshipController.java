@@ -2,7 +2,6 @@ package com.mayckgomes.dateplan_api.controllers;
 
 import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.relationship.ChangeInitialDayRequest;
-import com.mayckgomes.dateplan_api.dto.relationship.DeleteRelationshipResponse;
 import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;
 import com.mayckgomes.dateplan_api.services.RelationshipService;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,7 @@ public class RelationshipController {
 
     @DeleteMapping("/")
     public ResponseEntity<Void> deleteRelationshipById(
-            Authentication authentication,
-            @RequestHeader("Authentication") String refreshToken
+            Authentication authentication
     ){
 
         var user = (UserDomain) authentication.getPrincipal();

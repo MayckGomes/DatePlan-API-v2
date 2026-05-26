@@ -70,7 +70,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                      }\s
                    \s""");
 
-            return;
         } catch (TokenInBlackListException e){
 
             SecurityContextHolder.clearContext();
@@ -84,7 +83,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                      }\s
                    \s""");
 
-            return;
         } catch (UserNotFoundException e){
 
             SecurityContextHolder.clearContext();
@@ -98,7 +96,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                      }\s
                    \s""");
 
-            return;
         }
 
     }

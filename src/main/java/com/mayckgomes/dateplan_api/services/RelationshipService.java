@@ -1,7 +1,6 @@
 package com.mayckgomes.dateplan_api.services;
 
 import com.mayckgomes.dateplan_api.domains.UserDomain;
-import com.mayckgomes.dateplan_api.dto.relationship.DeleteRelationshipResponse;
 import com.mayckgomes.dateplan_api.dto.relationship.RelationshipResponse;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.UserDontHaveRelationshipException;
@@ -12,7 +11,6 @@ import com.mayckgomes.dateplan_api.repositorys.MemoriesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.SendNotification;
-import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
