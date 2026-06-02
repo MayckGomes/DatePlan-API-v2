@@ -51,9 +51,13 @@ public class MemoryController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteMemory(@Valid @RequestBody DeleteMemoryRequest memoryRequest){
+    public ResponseEntity<Void> deleteMemory(
+            @Valid @RequestBody DeleteMemoryRequest memoryRequest,
+            Authentication authentication){
 
-        memoryService.deleteMemory(memoryRequest.getMemoryId());
+        var user = (UserDomain) authentication.getPrincipal();
+
+        memoryService.deleteMemory(memoryRequest.getMemoryId(), user.getRelationshipId());
 
         return ResponseEntity.noContent().build();
 
