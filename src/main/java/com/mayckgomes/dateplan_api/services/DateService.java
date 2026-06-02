@@ -33,6 +33,10 @@ public class DateService {
 
     public List<DateResponse> getDates(Long relationshipId){
 
+        if (relationshipId == null){
+            throw new RelationshipNotFoundException();
+        }
+
         var existsRelationship = relationshipsRepository.existsById(relationshipId);
 
         if (!existsRelationship){

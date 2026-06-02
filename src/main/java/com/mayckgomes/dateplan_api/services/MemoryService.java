@@ -74,7 +74,13 @@ public class MemoryService {
 
     }
 
-    public void deleteMemory(Long memoryId){
+    public void deleteMemory(Long memoryId, Long relationshipId){
+
+        var existsRelationship = relationshipsRepository.existsById(relationshipId);
+
+        if (!existsRelationship){
+            throw new RelationshipNotFoundException();
+        }
 
         var existsDate = memoriesRepository.existsById(memoryId);
 
