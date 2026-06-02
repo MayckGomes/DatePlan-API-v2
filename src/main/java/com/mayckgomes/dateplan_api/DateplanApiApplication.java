@@ -30,7 +30,7 @@ public class DateplanApiApplication {
 					.build();
 
 			FirebaseApp.initializeApp(options);
-			System.out.println("ok");
+			System.out.println("firebase initialized successfully ");
 
 		} catch (Exception e) {
 			System.out.println("firebase error");
