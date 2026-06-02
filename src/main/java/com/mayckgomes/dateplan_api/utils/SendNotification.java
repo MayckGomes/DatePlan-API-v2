@@ -35,7 +35,7 @@ public class SendNotification {
             String jsonString = mapper.writeValueAsString(date);
 
             Message message = Message.builder()
-                    .putData("title","update: " + date.getTitle())
+                    .putData("title","edit: " + date.getTitle())
                     .putData("body", jsonString)
                     .setToken(userNotificationToken)
                     .build();

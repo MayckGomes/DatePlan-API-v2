@@ -9,5 +9,5 @@ public interface DatesRepository extends JpaRepository<DatesEntity, Long> {
 
     List<DatesEntity> findAllByRelationshipId(Long relationshipId);
 
-    Void deleteAllByRelationshipId(Long relationshipId);
+    void deleteAllByRelationshipId(Long relationshipId);
 }

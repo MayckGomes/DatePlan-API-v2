@@ -9,6 +9,6 @@ public interface MemoriesRepository extends JpaRepository<MemoriesEntity, Long> 
 
     List<MemoriesEntity> findAllByRelationshipId(Long relationshipId);
 
-    Void deleteAllByRelationshipId(Long relationshipId);
+    void deleteAllByRelationshipId(Long relationshipId);
     
 }
