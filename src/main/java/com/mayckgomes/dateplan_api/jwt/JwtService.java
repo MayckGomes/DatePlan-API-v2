@@ -2,6 +2,7 @@ package com.mayckgomes.dateplan_api.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mayckgomes.dateplan_api.domains.RefreshTokenDecoded;
@@ -13,6 +14,7 @@ import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidTypeExcept
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -31,9 +33,8 @@ public class JwtService {
 
     public String createAccessToken(UserDomain user){
 
-        int fifteenMinutesInSeconds = 900;
-
-        Instant expireTimeAccess = Instant.now().plusSeconds(fifteenMinutesInSeconds);
+        Instant expireTimeAccess = Instant.now()
+                .plus(Duration.ofMinutes(15));
 
         String accessTokenId = UUID.randomUUID().toString();
 
@@ -50,9 +51,8 @@ public class JwtService {
 
     public String createRefreshToken(UserDomain user){
 
-        int oneWeekInSeconds = 604800;
-
-        Instant expireTimeRefresh = Instant.now().plusSeconds(oneWeekInSeconds);
+        Instant expireTimeRefresh = Instant.now()
+                .plus(Duration.ofDays(7));
 
         String refreshTokenId = UUID.randomUUID().toString();
 
@@ -124,15 +124,12 @@ public class JwtService {
     public String getTokenId(String token){
 
         try {
-            DecodedJWT verifier = JWT.require(algorithm)
-                    .build()
-                    .verify(token);
 
-            return verifier.getId();
+            DecodedJWT decoded = JWT.decode(token);
 
-        } catch (com.auth0.jwt.exceptions.TokenExpiredException exception){
-            throw new TokenExpiredException();
-        } catch (JWTVerificationException exception){
+            return decoded.getId();
+
+        } catch (JWTDecodeException exception){
             throw new TokenInvalidException();
         }
 
