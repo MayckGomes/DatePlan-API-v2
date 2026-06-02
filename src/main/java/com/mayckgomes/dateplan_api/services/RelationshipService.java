@@ -72,8 +72,11 @@ public class RelationshipService {
 
         var targetRelationship = relationshipsRepository.findById(user.getRelationshipId()).orElseThrow(RelationshipNotFoundException::new);
 
-        var user1 = usersRepository.findById(targetRelationship.getUserId1()).orElseThrow(() -> new UserRelationshipNotFoundException("1"));
-        var user2 = usersRepository.findById(targetRelationship.getUserId2()).orElseThrow(() -> new UserRelationshipNotFoundException("2"));
+        var user1 = usersRepository.findById(targetRelationship.getUserId1())
+                .orElseThrow(() -> new UserRelationshipNotFoundException("1"));
+
+        var user2 = usersRepository.findById(targetRelationship.getUserId2())
+                .orElseThrow(() -> new UserRelationshipNotFoundException("2"));
 
         user1.setRelationshipId(null);
         user2.setRelationshipId(null);
