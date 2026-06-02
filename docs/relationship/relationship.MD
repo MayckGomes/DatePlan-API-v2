@@ -37,15 +37,6 @@ Behavior expected:
 
 `The relationship id is get by access token`
 
-Response body expected
-
-   ```
-   {
-        "accessToken": String
-   }
-   ```
-
-
 #### Returns
 
 * `400 - BAD REQUEST` - Invalid parameters(null parameters) .

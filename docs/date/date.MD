@@ -102,4 +102,5 @@ Request body expected:
 #### Returns
 
 * `400 - BAD REQUEST` - Invalid parameters(null parameters).
+* `404 - NOT FOUND` - Relationship not exists.
 * `409 - CONFLICT` - Date not exists.

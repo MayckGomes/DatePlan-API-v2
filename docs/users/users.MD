@@ -57,7 +57,7 @@ Request body expected:
 * `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
 * `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.
-* `409 - CONFLICT  ` - jwt user id and body request user id dont matches.
+* `409 - CONFLICT  ` - jwt user id and body request user id dont matches. | user in a relationship
 
 ---
 
