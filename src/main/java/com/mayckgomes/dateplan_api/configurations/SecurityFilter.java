@@ -1,5 +1,6 @@
 package com.mayckgomes.dateplan_api.configurations;
 
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidTypeException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
@@ -96,6 +97,18 @@ public class SecurityFilter extends OncePerRequestFilter {
                      }\s
                    \s""");
 
+        } catch (TokenInvalidTypeException e){
+
+            SecurityContextHolder.clearContext();
+
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json");
+            response.getWriter().write("""
+                    {\s
+                        "status": 401,
+                        "message": "The type of this token is invalid"
+                     }\s
+                   \s""");
         }
 
     }
