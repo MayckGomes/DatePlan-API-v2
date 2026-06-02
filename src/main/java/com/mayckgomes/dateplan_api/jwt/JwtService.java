@@ -104,8 +104,6 @@ public class JwtService {
                     .build()
                     .verify(token);
 
-            System.out.println(verifier.getClaim("type").asString());
-
             if (!verifier.getClaim("type").asString().equals("Refresh")){
                 throw new TokenInvalidTypeException("Refresh");
             }
