@@ -39,8 +39,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         try {
 
-            System.out.println("PATH -> " + request.getServletPath());
-
             var token = request.getHeader("Authorization");
 
             if (token != null && token.startsWith("Bearer ")) {
