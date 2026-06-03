@@ -11,7 +11,7 @@ import com.mayckgomes.dateplan_api.dto.auth.TokensResponse;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenExpiredException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidTypeException;
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -21,13 +21,14 @@ import java.util.UUID;
 @Component
 public class JwtService {
 
-    Dotenv dotenv = Dotenv.load();
+    @Value("jwt.secret")
+    private String secret;
 
-    final private String secret = dotenv.get("SECRET");
+    @Value("jwt.issuer")
+    private String issuer;
 
-    final private String issuer = dotenv.get("ISSUER");
-
-    final private String audience = dotenv.get("AUDIENCE");
+    @Value("jwt.audience")
+    private String audience;
 
     final private Algorithm algorithm = Algorithm.HMAC256(secret);
 

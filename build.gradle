@@ -26,8 +26,6 @@ dependencies {
 
 	implementation 'commons-codec:commons-codec:1.22.0'
 
-	implementation 'io.github.cdimascio:dotenv-java:3.2.0'
-
 	implementation 'com.google.guava:guava:33.6.0-jre'
 
 	implementation 'org.springframework.boot:spring-boot-h2console'

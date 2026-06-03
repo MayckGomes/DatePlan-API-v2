@@ -1,6 +1,6 @@
 package com.mayckgomes.dateplan_api.configurations;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +18,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfigurations {
 
     SecurityFilter securityFilter;
-    Dotenv dotenv = Dotenv.load();
+
+    @Value("password.salt.length")
+    private String salt;
+
+    @Value("password.hash.length")
+    private String hash;
+
+    @Value("password.parallelism")
+    private String parallelism;
+
+    @Value("password.memory")
+    private String memory;
+
+    @Value("password.iterations")
+    private String iterations;
 
     public SecurityConfigurations(SecurityFilter securityFilter){
         this.securityFilter = securityFilter;
@@ -53,11 +67,11 @@ public class SecurityConfigurations {
     public PasswordEncoder passwordEncoder() {
 
         return new Argon2PasswordEncoder(
-                Integer.parseInt(dotenv.get("SALT_LENGTH")),
-                Integer.parseInt(dotenv.get("HASH_LENGTH")),
-                Integer.parseInt(dotenv.get("PARALLELISM")),
-                Integer.parseInt(dotenv.get("MEMORY")),
-                Integer.parseInt(dotenv.get("ITERATIONS")));
+                Integer.parseInt(salt),
+                Integer.parseInt(hash),
+                Integer.parseInt(parallelism),
+                Integer.parseInt(memory),
+                Integer.parseInt(iterations));
     }
 
 }
