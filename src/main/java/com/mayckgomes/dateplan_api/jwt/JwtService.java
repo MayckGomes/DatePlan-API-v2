@@ -21,13 +21,13 @@ import java.util.UUID;
 @Component
 public class JwtService {
 
-    @Value("jwt.secret")
+    @Value("${jwt.secret}")
     private String secret;
 
-    @Value("jwt.issuer")
+    @Value("${jwt.issuer}")
     private String issuer;
 
-    @Value("jwt.audience")
+    @Value("${jwt.audience}")
     private String audience;
 
     final private Algorithm algorithm = Algorithm.HMAC256(secret);

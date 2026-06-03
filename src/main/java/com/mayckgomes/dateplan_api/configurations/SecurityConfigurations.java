@@ -19,19 +19,19 @@ public class SecurityConfigurations {
 
     SecurityFilter securityFilter;
 
-    @Value("password.salt.length")
+    @Value("${password.salt.length}")
     private String salt;
 
-    @Value("password.hash.length")
+    @Value("${password.hash.length}")
     private String hash;
 
-    @Value("password.parallelism")
+    @Value("${password.parallelism}")
     private String parallelism;
 
-    @Value("password.memory")
+    @Value("${password.memory}")
     private String memory;
 
-    @Value("password.iterations")
+    @Value("${password.iterations}")
     private String iterations;
 
     public SecurityConfigurations(SecurityFilter securityFilter){

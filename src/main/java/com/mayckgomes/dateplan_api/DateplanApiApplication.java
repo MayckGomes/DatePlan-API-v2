@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 @SpringBootApplication
 public class DateplanApiApplication {
 
-	@Value("firebase.json.path")
+	@Value("${firebase.json.path}")
 	private static String path;
 
 	public static void main(String[] args) {
