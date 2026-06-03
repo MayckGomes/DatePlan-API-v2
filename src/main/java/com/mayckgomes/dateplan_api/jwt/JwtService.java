@@ -21,16 +21,19 @@ import java.util.UUID;
 @Component
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final Algorithm algorithm;
+    private final String issuer;
+    private final String audience;
 
-    @Value("${jwt.issuer}")
-    private String issuer;
-
-    @Value("${jwt.audience}")
-    private String audience;
-
-    final private Algorithm algorithm = Algorithm.HMAC256(secret);
+    public JwtService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.issuer}") String issuer,
+            @Value("${jwt.audience}") String audience
+    ) {
+        this.algorithm = Algorithm.HMAC256(secret);
+        this.issuer = issuer;
+        this.audience = audience;
+    }
 
     public String createAccessToken(UserDomain user){
 
