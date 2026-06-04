@@ -8,3 +8,9 @@ CREATE TABLE memories(
     id_relationship BIGINT NOT NULL,
     id_author BIGINT NOT NULL
 );
+
+CREATE INDEX idx_memories_id
+    ON memories(id);
+
+CREATE INDEX idx_memories_relationship_id
+    ON memories(id_relationship);

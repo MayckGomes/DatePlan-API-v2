@@ -9,3 +9,8 @@ CREATE TABLE dates(
     id_relationship BIGINT NOT NULL,
     id_author BIGINT NOT NULL
 );
+
+CREATE INDEX idx_dates_id
+    ON dates(id);
+CREATE INDEX idx_dates_relationship_id
+    ON dates(id_relationship);
