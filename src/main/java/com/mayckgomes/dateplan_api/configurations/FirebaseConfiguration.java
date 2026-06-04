@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-
-import java.io.IOException;
 import java.io.InputStream;
 
 @Configuration
@@ -18,7 +16,7 @@ public class FirebaseConfiguration {
     private Resource firebaseResource;
 
     @Bean
-    public FirebaseApp firebaseApp() throws IOException {
+    public FirebaseApp firebaseApp() {
 
         if (FirebaseApp.getApps().isEmpty()) {
 
@@ -28,7 +26,14 @@ public class FirebaseConfiguration {
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                         .build();
 
+                System.out.println("Firebase initialized successfully");
+
                 return FirebaseApp.initializeApp(options);
+
+            } catch (Exception e) {
+
+                System.out.println("Firebase Error");
+
             }
         }
 
