@@ -14,6 +14,7 @@ public class UserResponse {
     private String name;
     private String relationshipId;
     private String plan;
+    private Long acceptPolicyPrivacyVersion;
 
 
 }
