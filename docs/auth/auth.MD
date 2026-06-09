@@ -30,7 +30,8 @@ Response body expected
             "publicId": String,
             "name": String,
             "relationshipId": "Long/null",
-            "plan": String
+            "plan": String,
+            "acceptPolicyPrivacyVersion": Long
         }
         
    }
@@ -68,7 +69,8 @@ Response body expected
             "publicId": String,
             "name": String,
             "relationshipId": "Long/null",
-            "plan": String
+            "plan": String,
+            "acceptPolicyPrivacyVersion": Long
         }
         
    }
@@ -106,7 +108,8 @@ Response body expected
             "publicId": String,
             "name": String,
             "relationshipId": "Long/null",
-            "plan": String
+            "plan": String,
+            "acceptPolicyPrivacyVersion": Long
         }
         
    }
