@@ -16,7 +16,7 @@ public class RegisterRequest {
     private String name;
 
     @Email
-    @Size(max = 50)
+    @Size(max = 255)
     @NotNull
     @NotBlank
     private String email;

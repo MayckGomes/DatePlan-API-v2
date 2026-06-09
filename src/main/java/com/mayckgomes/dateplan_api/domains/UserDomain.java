@@ -23,16 +23,8 @@ public class UserDomain implements UserDetails {
     private Long relationshipId;
     private String plan;
     private String notificationToken;
-
-    public UserDomain(Long id, String publicId, String name, String email, Long relationshipId, String plan, String notificationToken) {
-        this.id = id;
-        this.publicId = publicId;
-        this.name = name;
-        this.email = email;
-        this.relationshipId = relationshipId;
-        this.plan = plan;
-        this.notificationToken = notificationToken;
-    }
+    private Long acceptPolicyPrivacyVersion;
+    private String acceptedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -60,7 +52,9 @@ public class UserDomain implements UserDetails {
                 publicId,
                 name,
                 relationshipIdUser,
-                plan
+                plan,
+                acceptPolicyPrivacyVersion,
+                acceptedAt
         );
     }
 
