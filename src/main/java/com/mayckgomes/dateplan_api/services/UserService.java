@@ -1,10 +1,8 @@
 package com.mayckgomes.dateplan_api.services;
 
-import com.mayckgomes.dateplan_api.dto.user.UpdateNotificationTokenRequest;
+import com.mayckgomes.dateplan_api.dto.user.*;
 import com.mayckgomes.dateplan_api.exception.custom.invite.UserHaveARelationshipException;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
-import com.mayckgomes.dateplan_api.dto.user.DeleteUserRequest;
-import com.mayckgomes.dateplan_api.dto.user.UserRelationshipIdResponse;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserIdInvalidException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
@@ -98,20 +96,6 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public UserRelationshipIdResponse getRelationshipId(Long userId){
-        var targetUser = usersRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-
-        var relationshipid = targetUser.getRelationshipId().toString();
-
-        if (relationshipid.equals(null)){
-            relationshipid = "null";
-        } else {
-            relationshipid.toString();
-        }
-
-        return new UserRelationshipIdResponse(relationshipid);
-    }
-
     @Transactional
     public void updateNotificationToken(Long userId, UpdateNotificationTokenRequest notificationTokenRequest){
 
@@ -119,6 +103,32 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(UserNotFoundException::new);
 
         targetUser.setNotificationToken(notificationTokenRequest.getNotificationToken());
+
+        usersRepository.save(targetUser);
+
+    }
+
+    @Transactional
+    public void updatePolicyPrivacy(Long userId, UpdatePolicyPrivacy updatePolicyPrivacy){
+
+        var targetUser = usersRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        targetUser.setAcceptPolicyPrivacyVersion(updatePolicyPrivacy.getVersion());
+        targetUser.setPolicyPrivacyAcceptedAt(updatePolicyPrivacy.getAcceptedDate());
+
+        usersRepository.save(targetUser);
+
+    }
+
+    @Transactional
+    public void updateTermsOfUse(Long userId, UpdateTermsOfUse updateTermsOfUse){
+
+        var targetUser = usersRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        targetUser.setAcceptTermsOfUseVersion(updateTermsOfUse.getVersion());
+        targetUser.setTermsOfUseAcceptedAt(updateTermsOfUse.getAcceptedDate());
 
         usersRepository.save(targetUser);
 

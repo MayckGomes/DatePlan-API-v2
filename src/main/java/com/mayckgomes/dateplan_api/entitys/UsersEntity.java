@@ -24,7 +24,9 @@ public class UsersEntity {
     private String plan;
     private String notificationToken;
     private Long acceptPolicyPrivacyVersion;
-    private String acceptedAt;
+    private String policyPrivacyAcceptedAt;
+    private Long acceptTermsOfUseVersion;
+    private String termsOfUseAcceptedAt;
 
     public UserDomain toUserDomain(){
         return new UserDomain(
@@ -36,7 +38,8 @@ public class UsersEntity {
                 relationshipId,
                 plan,
                 notificationToken,
-                acceptPolicyPrivacyVersion
+                acceptPolicyPrivacyVersion,
+                acceptTermsOfUseVersion
         );
     }
 

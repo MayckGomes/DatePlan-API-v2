@@ -12,9 +12,10 @@ public class UserResponse {
     private Long id;
     private String publicId;
     private String name;
-    private String relationshipId;
+    private Long relationshipId;
     private String plan;
     private Long acceptPolicyPrivacyVersion;
+    private Long acceptTermsOfUseVersion;
 
 
 }

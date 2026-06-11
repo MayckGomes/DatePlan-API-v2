@@ -29,9 +29,10 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": "Long/null",
+            "relationshipId": Long/null,
             "plan": String,
-            "acceptPolicyPrivacyVersion": Long
+            "acceptPolicyPrivacyVersion": Long,
+            "acceptTermsOfUseVersion": Long,
         }
         
    }
@@ -68,9 +69,10 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": "Long/null",
+            "relationshipId": Long/null,
             "plan": String,
-            "acceptPolicyPrivacyVersion": Long
+            "acceptPolicyPrivacyVersion": Long,
+            "acceptTermsOfUseVersion": Long,
         }
         
    }
@@ -107,9 +109,10 @@ Response body expected
             "id": Long,
             "publicId": String,
             "name": String,
-            "relationshipId": "Long/null",
+            "relationshipId": Long/null,
             "plan": String,
-            "acceptPolicyPrivacyVersion": Long
+            "acceptPolicyPrivacyVersion": Long,
+            "acceptTermsOfUseVersion": Long,
         }
         
    }

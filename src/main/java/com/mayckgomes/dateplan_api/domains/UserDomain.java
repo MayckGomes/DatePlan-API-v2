@@ -24,6 +24,7 @@ public class UserDomain implements UserDetails {
     private String plan;
     private String notificationToken;
     private Long acceptPolicyPrivacyVersion;
+    private Long acceptTermsOfUseVersion;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -37,22 +38,14 @@ public class UserDomain implements UserDetails {
 
     public UserResponse toUserResponse(){
 
-        String relationshipIdUser;
-
-        if (this.relationshipId == null) {
-
-            relationshipIdUser = "null";
-        } else {
-            relationshipIdUser = relationshipId.toString();
-        }
-
         return new UserResponse(
                 id,
                 publicId,
                 name,
-                relationshipIdUser,
+                relationshipId,
                 plan,
-                acceptPolicyPrivacyVersion
+                acceptPolicyPrivacyVersion,
+                acceptTermsOfUseVersion
         );
     }
 

@@ -55,14 +55,6 @@ public class UserController {
 
     }
 
-    @GetMapping("/relationship")
-    public ResponseEntity<UserRelationshipIdResponse> getRelationshipId(Authentication authentication) {
-        UserDomain user = (UserDomain) authentication.getPrincipal();
-
-        return ResponseEntity.ok(userService.getRelationshipId(user.getId()));
-
-    }
-
     @PatchMapping("/updateNotificationToken")
     public ResponseEntity<Void> updateNotificationToken(
             @Valid @RequestBody UpdateNotificationTokenRequest notificationTokenRequest,
@@ -75,4 +67,33 @@ public class UserController {
         return ResponseEntity.ok().build();
 
     }
+
+    @PatchMapping("/updatePolicyPrivacy")
+    public ResponseEntity<Void> updatePolicyPrivacy(
+            @Valid @RequestBody UpdatePolicyPrivacy updatePolicyPrivacy,
+            Authentication authentication
+    ){
+
+        var user = (UserDomain) authentication.getPrincipal();
+
+        userService.updatePolicyPrivacy(user.getId(), updatePolicyPrivacy);
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PatchMapping("/updateTermsOfUse")
+    public ResponseEntity<Void> updateTermsOfUse(
+            @Valid @RequestBody UpdateTermsOfUse updateTermsOfUse,
+            Authentication authentication
+    ){
+
+        var user = (UserDomain) authentication.getPrincipal();
+
+        userService.updateTermsOfUse(user.getId(), updateTermsOfUse);
+
+        return ResponseEntity.ok().build();
+
+    }
+
 }

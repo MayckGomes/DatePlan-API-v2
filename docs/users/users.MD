@@ -61,13 +61,13 @@ Request body expected:
 
 ---
 
-### GET `/relationship`
+### PATCH `/updateNotificationToken`
 
-Response body expected:
+Request body expected:
 
    ```
    {
-        "relationshipId" : "Long/null" 
+        "notificationToken" : String
    }
    ```
 
@@ -76,15 +76,37 @@ Response body expected:
 * `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
 * `401 - UNAUTHORIZED  ` - JWT invalid.
 * `404 - NOT FOUND  ` - user dont exists.
+
 ---
 
-### PATCH `/updateNotificationToken`
+### PATCH `/updatePolicyPrivacy`
 
-Response body expected:
+Request body expected:
 
    ```
    {
-        "notificationToken" : String
+        "version" : Long
+        "acceptedDate" : String
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid (null parameters, size invalid) .
+* `401 - UNAUTHORIZED  ` - JWT invalid.
+* `404 - NOT FOUND  ` - user dont exists.
+
+---
+
+
+### PATCH `/updateTermsOfUse`
+
+Request body expected:
+
+   ```
+   {
+        "version" : Long
+        "acceptedDate" : String
    }
    ```
 
