@@ -12,7 +12,11 @@ Request body expected:
    {
         "name": String,
         "email": String,
-        "password": String
+        "password": String,
+        "policyPrivacyAcceptedVersion": Long
+        "policyPrivacyAcceptedAt: String
+        "TermsOfUseAcceptedVersion": Long
+        "TermsOfUseAcceptedAt: String
    }
    ```
 
