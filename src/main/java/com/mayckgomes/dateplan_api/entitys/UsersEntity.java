@@ -22,6 +22,7 @@ public class UsersEntity {
     private String password;
     private Long relationshipId;
     private String plan;
+    private String accountType;
     private String notificationToken;
     private Long acceptPolicyPrivacyVersion;
     private String policyPrivacyAcceptedAt;

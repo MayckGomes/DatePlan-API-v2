@@ -86,7 +86,8 @@ public class AuthService {
 
         var newUser = new UsersEntity();
 
-        var defaultPlan = "Free";
+        var defaultPlan = "FREE";
+        var defaultAccountType = "APP";
         var defaultNotificationToken = "";
 
         var publicId = CreatePublicId.create(registerRequest.getEmail(), registerRequest.getName());
@@ -96,10 +97,18 @@ public class AuthService {
         newUser.setEmail(registerRequest.getEmail());
         newUser.setName(registerRequest.getName());
         newUser.setPassword(encryptedPassword);
+
         newUser.setPublicId(publicId);
         newUser.setRelationshipId(null);
         newUser.setNotificationToken(defaultNotificationToken);
         newUser.setPlan(defaultPlan);
+        newUser.setAccountType(defaultAccountType);
+
+        newUser.setAcceptTermsOfUseVersion(registerRequest.getTermsOfUseAcceptedVersion());
+        newUser.setTermsOfUseAcceptedAt(registerRequest.getTermsOfUseAcceptedAt());
+
+        newUser.setAcceptPolicyPrivacyVersion(registerRequest.getPolicyPrivacyAcceptedVersion());
+        newUser.setPolicyPrivacyAcceptedAt(registerRequest.getPolicyPrivacyAcceptedAt());
 
         var savedUser = usersRepository.save(newUser);
 

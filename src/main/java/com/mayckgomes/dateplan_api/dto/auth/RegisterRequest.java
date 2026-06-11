@@ -26,4 +26,20 @@ public class RegisterRequest {
     @NotBlank
     private String password;
 
+    @NotNull
+    private Long policyPrivacyAcceptedVersion;
+
+    @Size(max = 10)
+    @NotNull
+    @NotBlank
+    private String policyPrivacyAcceptedAt;
+
+    @NotNull
+    private Long TermsOfUseAcceptedVersion;
+
+    @Size(max = 10)
+    @NotNull
+    @NotBlank
+    private String TermsOfUseAcceptedAt;
+
 }
