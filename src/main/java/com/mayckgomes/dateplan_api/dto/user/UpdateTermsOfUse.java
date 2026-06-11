@@ -12,7 +12,6 @@ import lombok.Setter;
 public class UpdateTermsOfUse {
 
     @NotNull
-    @NotBlank
     private Long version;
 
     @NotNull

@@ -12,7 +12,6 @@ import lombok.Setter;
 public class UpdatePolicyPrivacy {
 
     @NotNull
-    @NotBlank
     private Long version;
 
     @NotNull
