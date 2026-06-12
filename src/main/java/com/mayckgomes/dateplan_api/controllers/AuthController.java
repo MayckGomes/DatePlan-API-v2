@@ -35,6 +35,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequest));
     }
 
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponse> google(@Valid @RequestBody GoogleRequest googleRequest){
+        return ResponseEntity.ok(authService.googleAuth(googleRequest));
+    }
+
     @PostMapping("/refreshToken")
     public ResponseEntity<TokensResponse> refreshToken(@Valid @RequestHeader("Authorization") String token ){
         return ResponseEntity.ok(authService.refreshToken(token));

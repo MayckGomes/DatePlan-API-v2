@@ -1,6 +1,10 @@
 package com.mayckgomes.dateplan_api.services;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.mayckgomes.dateplan_api.dto.auth.*;
+import com.mayckgomes.dateplan_api.exception.custom.token.TokenInvalidException;
 import com.mayckgomes.dateplan_api.jwt.JwtService;
 import com.mayckgomes.dateplan_api.entitys.UsersEntity;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserAlreadyExistsException;
@@ -48,7 +52,8 @@ public class AuthService {
             throw new UserNotFoundException();
         }
 
-        var targetUser = usersRepository.findByEmail(loginRequest.getEmail());
+        var targetUser = usersRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(UserNotFoundException::new);
 
         var tokens = jwtService.createTokens(targetUser.toUserDomain());
 
@@ -84,8 +89,6 @@ public class AuthService {
             throw new UserAlreadyExistsException();
         }
 
-        var newUser = new UsersEntity();
-
         var defaultPlan = "FREE";
         var defaultAccountType = "APP";
         var defaultNotificationToken = "";
@@ -94,21 +97,20 @@ public class AuthService {
 
         var encryptedPassword = passwordEncoder.encode(registerRequest.getPassword());
 
-        newUser.setEmail(registerRequest.getEmail());
-        newUser.setName(registerRequest.getName());
-        newUser.setPassword(encryptedPassword);
-
-        newUser.setPublicId(publicId);
-        newUser.setRelationshipId(null);
-        newUser.setNotificationToken(defaultNotificationToken);
-        newUser.setPlan(defaultPlan);
-        newUser.setAccountType(defaultAccountType);
-
-        newUser.setAcceptTermsOfUseVersion(registerRequest.getTermsOfUseAcceptedVersion());
-        newUser.setTermsOfUseAcceptedAt(registerRequest.getTermsOfUseAcceptedAt());
-
-        newUser.setAcceptPolicyPrivacyVersion(registerRequest.getPolicyPrivacyAcceptedVersion());
-        newUser.setPolicyPrivacyAcceptedAt(registerRequest.getPolicyPrivacyAcceptedAt());
+        var newUser = UsersEntity.builder()
+                .email(registerRequest.getEmail())
+                .name(registerRequest.getName())
+                .password(encryptedPassword)
+                .publicId(publicId)
+                .relationshipId(null)
+                .notificationToken(defaultNotificationToken)
+                .plan(defaultPlan)
+                .accountType(defaultAccountType)
+                .acceptPolicyPrivacyVersion(registerRequest.getPolicyPrivacyAcceptedVersion())
+                .policyPrivacyAcceptedAt(registerRequest.getPolicyPrivacyAcceptedAt())
+                .acceptTermsOfUseVersion(registerRequest.getTermsOfUseAcceptedVersion())
+                .termsOfUseAcceptedAt(registerRequest.getTermsOfUseAcceptedAt())
+                .build();
 
         var savedUser = usersRepository.save(newUser);
 
@@ -117,6 +119,58 @@ public class AuthService {
         var user = savedUser.toUserDomain().toUserResponse();
 
         return new AuthResponse(tokens,user);
+
+    }
+
+    public AuthResponse googleAuth(GoogleRequest googleRequest) {
+
+        FirebaseToken decodedToken;
+
+        try {
+            decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleRequest.getToken());
+        } catch (FirebaseAuthException exception) {
+            System.out.println(exception.getMessage());
+            throw new TokenInvalidException();
+        }
+
+        var user = usersRepository.findByExternalProviderId(decodedToken.getUid());
+
+        if (user == null){
+
+            var exists = usersRepository.existsByEmail(decodedToken.getEmail());
+
+            if (exists){
+                throw new UserAlreadyExistsException();
+            }
+
+            var defaultPlan = "FREE";
+            var defaultNotificationToken = "";
+            var publicId = CreatePublicId.create(decodedToken.getEmail(), decodedToken.getName());
+
+            var newUser = UsersEntity.builder()
+                    .email(decodedToken.getEmail())
+                    .name(decodedToken.getName())
+                    .password(null)
+                    .externalProviderId(decodedToken.getUid())
+                    .publicId(publicId)
+                    .relationshipId(null)
+                    .notificationToken(defaultNotificationToken)
+                    .plan(defaultPlan)
+                    .accountType("GOOGLE")
+                    .acceptPolicyPrivacyVersion(0L)
+                    .policyPrivacyAcceptedAt("not found")
+                    .acceptTermsOfUseVersion(0L)
+                    .termsOfUseAcceptedAt("not found")
+                    .build();
+
+
+            user = usersRepository.save(newUser);
+
+        }
+
+        var tokens = jwtService.createTokens(user.toUserDomain());
+
+        return new AuthResponse(tokens,user.toUserDomain().toUserResponse());
 
     }
 

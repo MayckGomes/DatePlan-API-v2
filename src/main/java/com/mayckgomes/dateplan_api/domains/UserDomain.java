@@ -20,9 +20,12 @@ public class UserDomain implements UserDetails {
     private String name;
     private String email;
     private String password;
+    private String externalProviderId;
+
     private Long relationshipId;
     private String plan;
     private String notificationToken;
+
     private Long acceptPolicyPrivacyVersion;
     private Long acceptTermsOfUseVersion;
 

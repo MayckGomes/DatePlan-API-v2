@@ -49,6 +49,49 @@ Response body expected
 
 ---
 
+### POST `/google`
+
+Request body expected:
+
+   ```
+   {
+        "id": String,
+        "name": String
+        "email": String
+        "token": String
+   }
+   ```
+
+Response body expected
+
+   ```
+   {
+        tokens: {
+            "accessToken": String,
+            "refreshToken": String
+        },
+        
+        user: {
+            "id": Long,
+            "publicId": String,
+            "name": String,
+            "relationshipId": Long/null,
+            "plan": String,
+            "acceptPolicyPrivacyVersion": Long,
+            "acceptTermsOfUseVersion": Long,
+        }
+        
+   }
+   ```
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid parameters.
+* `404 - NOT FOUND` - user dont exists.
+* `409 - CONFLICT` - user already exists.
+
+---
+
 ### POST `/login`
 
 Request body expected:

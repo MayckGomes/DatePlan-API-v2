@@ -10,10 +10,12 @@ import java.util.Optional;
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
 
-    UsersEntity findByEmail(String email) throws UserNotFoundException;
+    Optional<UsersEntity> findByEmail(String email) throws UserNotFoundException;
 
     Boolean existsByEmail(String email);
 
     Optional<UsersEntity> findByPublicId(String publicId);
+
+    UsersEntity findByExternalProviderId(String externalProviderId);
 
 }

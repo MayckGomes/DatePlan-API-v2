@@ -4,7 +4,7 @@ CREATE TABLE users(
 
     name VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(250) NOT NULL,
+    password VARCHAR(250),
 
     account_type VARCHAR(50),
     external_provider_id VARCHAR(255),
