@@ -15,8 +15,8 @@ Request body expected:
         "password": String,
         "policyPrivacyAcceptedVersion": Long
         "policyPrivacyAcceptedAt: String
-        "TermsOfUseAcceptedVersion": Long
-        "TermsOfUseAcceptedAt: String
+        "termsOfUseAcceptedVersion": Long
+        "termsOfUseAcceptedAt: String
    }
    ```
 

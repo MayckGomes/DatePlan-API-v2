@@ -35,11 +35,11 @@ public class RegisterRequest {
     private String policyPrivacyAcceptedAt;
 
     @NotNull
-    private Long TermsOfUseAcceptedVersion;
+    private Long termsOfUseAcceptedVersion;
 
     @Size(max = 10)
     @NotNull
     @NotBlank
-    private String TermsOfUseAcceptedAt;
+    private String termsOfUseAcceptedAt;
 
 }
