@@ -106,26 +106,29 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updatePolicyPrivacy(Long userId, UpdatePolicyPrivacy updatePolicyPrivacy){
 
-        var targetUser = usersRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        usersRepository.updatePolicyPrivacyAcceptedAtById(
+                updatePolicyPrivacy.getAcceptedDate(),
+                userId
+        );
 
-        targetUser.setAcceptPolicyPrivacyVersion(updatePolicyPrivacy.getVersion());
-        targetUser.setPolicyPrivacyAcceptedAt(updatePolicyPrivacy.getAcceptedDate());
-
-        usersRepository.save(targetUser);
-
+        usersRepository.updatePolicyPrivacyVersionById(
+                updatePolicyPrivacy.getVersion(),
+                userId
+        );
     }
 
     @Transactional
     public void updateTermsOfUse(Long userId, UpdateTermsOfUse updateTermsOfUse){
 
-        var targetUser = usersRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        usersRepository.updateTermsOfUseAcceptedAtById(
+                updateTermsOfUse.getAcceptedDate(),
+                userId
+        );
 
-        targetUser.setAcceptTermsOfUseVersion(updateTermsOfUse.getVersion());
-        targetUser.setTermsOfUseAcceptedAt(updateTermsOfUse.getAcceptedDate());
-
-        usersRepository.save(targetUser);
+        usersRepository.updateTermsOfUseVersionById(
+                updateTermsOfUse.getVersion(),
+                userId
+        );
 
     }
 
