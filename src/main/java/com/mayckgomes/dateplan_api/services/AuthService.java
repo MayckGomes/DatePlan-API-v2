@@ -124,20 +124,20 @@ public class AuthService {
 
     public AuthResponse googleAuth(GoogleRequest googleRequest) {
 
-        FirebaseToken decodedToken;
+        FirebaseToken googleUser;
 
         try {
-            decodedToken = FirebaseAuth.getInstance().verifyIdToken(googleRequest.getToken());
+            googleUser = FirebaseAuth.getInstance().verifyIdToken(googleRequest.getToken());
         } catch (FirebaseAuthException exception) {
             System.out.println(exception.getMessage());
             throw new TokenInvalidException();
         }
 
-        var user = usersRepository.findByExternalProviderId(decodedToken.getUid());
+        var user = usersRepository.findByExternalProviderId(googleUser.getUid());
 
         if (user == null){
 
-            var exists = usersRepository.existsByEmail(decodedToken.getEmail());
+            var exists = usersRepository.existsByEmail(googleUser.getEmail());
 
             if (exists){
                 throw new UserAlreadyExistsException();
@@ -145,13 +145,13 @@ public class AuthService {
 
             var defaultPlan = "FREE";
             var defaultNotificationToken = "";
-            var publicId = CreatePublicId.create(decodedToken.getEmail(), decodedToken.getName());
+            var publicId = CreatePublicId.create(googleUser.getEmail(), googleUser.getName());
 
             var newUser = UsersEntity.builder()
-                    .email(decodedToken.getEmail())
-                    .name(decodedToken.getName())
+                    .email(googleUser.getEmail())
+                    .name(googleUser.getName())
                     .password(null)
-                    .externalProviderId(decodedToken.getUid())
+                    .externalProviderId(googleUser.getUid())
                     .publicId(publicId)
                     .relationshipId(null)
                     .notificationToken(defaultNotificationToken)
@@ -165,6 +165,12 @@ public class AuthService {
 
 
             user = usersRepository.save(newUser);
+
+        } else {
+
+            user.setEmail(googleUser.getEmail());
+
+            usersRepository.save(user);
 
         }
 
