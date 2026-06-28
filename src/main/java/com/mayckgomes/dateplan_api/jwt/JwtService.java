@@ -83,6 +83,8 @@ public class JwtService {
         try{
 
             DecodedJWT verifier = JWT.require(algorithm)
+                    .withAudience(audience)
+                    .withIssuer(issuer)
                     .build()
                     .verify(token);
 
@@ -105,6 +107,8 @@ public class JwtService {
         try{
 
             DecodedJWT verifier = JWT.require(algorithm)
+                    .withAudience(audience)
+                    .withIssuer(issuer)
                     .build()
                     .verify(token);
 

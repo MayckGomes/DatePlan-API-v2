@@ -23,5 +23,7 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
+ENV JAVA_OPTS ="-Xms224m -Xmx736m -XX:MetaspaceSize=96m -XX:MaxMetaspaceSize=128m -XX:+UseZGC -XX:+ZGenerational -XX:+ExitOnOutOfMemoryError -XX:+DisableExplicitGC -Djava.security.egd=file:/dev/./urandom -XX:+UseContainerSupport -XX:ActiveProcessorCount=2 -XX:ParallelGCThreads=2 -XX:ConcGCThreads=1"
 
-ENTRYPOINT ["sh", "-c", "java -Xms128m -Xmx256m -XX:MaxMetaspaceSize=128m -Xss256k -XX:+UseSerialGC -jar app.jar"]
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
