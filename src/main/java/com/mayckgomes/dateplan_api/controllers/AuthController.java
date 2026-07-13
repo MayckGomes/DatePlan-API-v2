@@ -1,11 +1,13 @@
 package com.mayckgomes.dateplan_api.controllers;
 
 
+import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.auth.*;
 import com.mayckgomes.dateplan_api.services.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,8 +48,13 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@Valid @RequestBody LogoutRequest logoutRequest){
-        authService.logout(logoutRequest);
+    public ResponseEntity<Void> logout(
+            @Valid @RequestBody LogoutRequest logoutRequest,
+            Authentication authentication){
+
+        var user = (UserDomain) authentication.getPrincipal();
+
+        authService.logout(logoutRequest, user.getId());
 
         return ResponseEntity.ok().build();
     }

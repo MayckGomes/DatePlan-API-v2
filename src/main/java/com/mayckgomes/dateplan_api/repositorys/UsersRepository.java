@@ -6,7 +6,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.NativeQuery;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -42,5 +41,10 @@ public interface UsersRepository extends JpaRepository<UsersEntity, Long> {
     @Transactional
     @NativeQuery("UPDATE users SET terms_of_use_accepted_at = :date WHERE id = :id")
     int updateTermsOfUseAcceptedAtById(@Param("date") String date, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @NativeQuery("UPDATE users SET notification_token = '' WHERE id = :id")
+    int clearNotificationToken(@Param("id") Long id);
 
 }

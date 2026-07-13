@@ -12,6 +12,7 @@ import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.CreatePublicId;
 import com.mayckgomes.dateplan_api.utils.VerifyTokenText;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -196,7 +197,10 @@ public class AuthService {
 
     }
 
-    public void logout(LogoutRequest logoutRequest){
+    @Transactional
+    public void logout(LogoutRequest logoutRequest, Long userId){
+
+        usersRepository.clearNotificationToken(userId);
 
         redisBlackListService.addAccessToken(jwtService.getTokenId(logoutRequest.getAccessToken()),logoutRequest.getAccessToken());
         redisBlackListService.addRefreshToken(jwtService.getTokenId(logoutRequest.getRefreshToken()),logoutRequest.getAccessToken());

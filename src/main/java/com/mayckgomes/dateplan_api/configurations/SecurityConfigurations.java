@@ -48,6 +48,7 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/auth/logout").authenticated()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
