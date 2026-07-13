@@ -104,3 +104,30 @@ Request body expected:
 * `400 - BAD REQUEST` - Invalid parameters(null parameters).
 * `404 - NOT FOUND` - Relationship not exists.
 * `409 - CONFLICT` - Date not exists.
+
+---
+
+### POST `/{dateId}/convert-to-memory`
+
+Response body expected:
+
+   ```
+   [
+       {
+            "id": Long
+            "date": String
+            "local": String
+            "title": String
+            "description": String
+            "iconId": Long
+            "relationshipId": Long
+            "authorId": Long
+       }
+   ]
+   ```
+
+
+#### Returns
+
+* `400 - BAD REQUEST` - Invalid parameters(null parameters).
+* `409 - CONFLICT` - Date not exists.

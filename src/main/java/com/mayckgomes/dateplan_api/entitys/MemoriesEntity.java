@@ -1,18 +1,17 @@
 package com.mayckgomes.dateplan_api.entitys;
 
 
-import com.mayckgomes.dateplan_api.dto.date.DateResponse;
 import com.mayckgomes.dateplan_api.dto.memories.MemoryResponse;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity(name = "memories")
 @Table(name = "memories")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class MemoriesEntity {
 
     @Id

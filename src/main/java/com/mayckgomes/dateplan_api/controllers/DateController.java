@@ -5,6 +5,7 @@ import com.mayckgomes.dateplan_api.dto.date.CreateDateRequest;
 import com.mayckgomes.dateplan_api.dto.date.DateResponse;
 import com.mayckgomes.dateplan_api.dto.date.DeleteDateRequest;
 import com.mayckgomes.dateplan_api.dto.date.EditDateRequest;
+import com.mayckgomes.dateplan_api.dto.memories.MemoryResponse;
 import com.mayckgomes.dateplan_api.services.DateService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,16 @@ public class DateController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @PostMapping("/{id}/convert-to-memory")
+    public ResponseEntity<MemoryResponse> convertToMemory(
+            @PathVariable Long id,
+            Authentication authentication
+    ){
+        var user = (UserDomain) authentication.getPrincipal();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(dateService.convertToMemory(id, user.getId()));
     }
 
 }

@@ -4,14 +4,18 @@ import com.mayckgomes.dateplan_api.domains.UserDomain;
 import com.mayckgomes.dateplan_api.dto.date.CreateDateRequest;
 import com.mayckgomes.dateplan_api.dto.date.DateResponse;
 import com.mayckgomes.dateplan_api.dto.date.EditDateRequest;
+import com.mayckgomes.dateplan_api.dto.memories.MemoryResponse;
 import com.mayckgomes.dateplan_api.entitys.DatesEntity;
+import com.mayckgomes.dateplan_api.entitys.MemoriesEntity;
 import com.mayckgomes.dateplan_api.exception.custom.date.DateNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.relationship.RelationshipNotFoundException;
 import com.mayckgomes.dateplan_api.exception.custom.user.UserNotFoundException;
 import com.mayckgomes.dateplan_api.repositorys.DatesRepository;
+import com.mayckgomes.dateplan_api.repositorys.MemoriesRepository;
 import com.mayckgomes.dateplan_api.repositorys.RelationshipsRepository;
 import com.mayckgomes.dateplan_api.repositorys.UsersRepository;
 import com.mayckgomes.dateplan_api.utils.SendNotification;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +26,16 @@ public class DateService {
     DatesRepository datesRepository;
     RelationshipsRepository relationshipsRepository;
     UsersRepository usersRepository;
+    MemoriesRepository memoriesRepository;
 
     public DateService(DatesRepository datesRepository,
                        RelationshipsRepository relationshipsRepository,
-                       UsersRepository usersRepository) {
+                       UsersRepository usersRepository,
+                       MemoriesRepository memoriesRepository) {
         this.datesRepository = datesRepository;
         this.relationshipsRepository = relationshipsRepository;
         this.usersRepository = usersRepository;
+        this.memoriesRepository = memoriesRepository;
     }
 
     public List<DateResponse> getDates(Long relationshipId){
@@ -142,6 +149,30 @@ public class DateService {
         SendNotification.sendDelete(targetUser.getNotificationToken(), targetDate.toDateResponse());
 
         datesRepository.deleteById(dateId);
+
+    }
+
+    @Transactional
+    public MemoryResponse convertToMemory(Long dateId, Long userId){
+
+        var targetDate = datesRepository.findById(dateId)
+                .orElseThrow(DateNotFoundException::new);
+
+        var newMemory = MemoriesEntity.builder()
+                .date(targetDate.getDate())
+                .local(targetDate.getLocal())
+                .title(targetDate.getTitle())
+                .description(targetDate.getDescription())
+                .iconId(targetDate.getIconId())
+                .relationshipId(targetDate.getRelationshipId())
+                .authorId(userId)
+                .build();
+
+        var savedMemory = memoriesRepository.save(newMemory);
+
+        datesRepository.deleteById(targetDate.getId());
+
+        return savedMemory.toMemoryResponse();
 
     }
 
