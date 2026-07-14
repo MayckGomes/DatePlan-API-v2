@@ -18,8 +18,8 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-        - name: gerar o build jar
-          run: ./gradlew bootjar
+      - name: gerar o build jar
+        run: ./gradlew bootjar
   
 
 
