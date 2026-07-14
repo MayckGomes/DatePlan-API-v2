@@ -26,6 +26,15 @@ jobs:
         with:
           name: Jar
           path: build/libs/dateplan-api-0.0.1-SNAPSHOT.jar
-  
+
+      - name: upload jar
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          source: build/libs/dateplan-api-0.0.1-SNAPSHOT.jar
+          target: /home/ubuntu/api/
+        
 
 
