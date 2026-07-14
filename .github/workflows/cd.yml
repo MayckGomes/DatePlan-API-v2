@@ -20,6 +20,9 @@ jobs:
 
       - name: gerar o build jar
         run: ./gradlew bootjar
+
+      - name: verificar o caminho do arquivo
+        run: ls -la build/libs/
   
 
 
