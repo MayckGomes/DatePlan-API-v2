@@ -35,10 +35,20 @@ jobs:
           strip_components: 2 
 
       - name: restart service
-        run: sudo systemctl restart dateplanapi.service
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          script: sudo systemctl restart dateplanapi.service
 
       - name: see status
-        run: sudo systemctl status dateplanapi.service 
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          script: sudo systemctl status dateplanapi.service
       
         
 
